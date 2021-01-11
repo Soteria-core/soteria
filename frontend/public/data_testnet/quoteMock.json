@@ -1,0 +1,13 @@
+{
+    "currency":"BNB",
+    "period":"30",
+    "amount":"10",
+    "price":"393592980512036997",
+    "priceInNXM":"3858753973056222999",
+    "expiresAt":1606981808,
+    "generatedAt":1606981507092,
+    "contract":"0x00000000219ab540356cbb839cbe05303d7705fa",
+    "v":27,
+    "r":"0x97bb563179d78ebe7a9478a316f6a59a354b159eb32dc29f7ee3379fc4c7962d",
+    "s":"0x100a5970fb470d54c562fe5e9d266b05aaf0bee408f9d3c7cab58dcf843c25b8"
+}

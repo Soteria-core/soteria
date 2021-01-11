@@ -1,0 +1,140 @@
+@import './element-variables.scss';
+@import './variables.scss';
+@import './mixin.scss';
+@import './transition.scss';
+@import './element-ui.scss';
+@import './sidebar.scss';
+
+body {
+  height: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  // font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  font-family: Open Sans,sans-serif;
+  font-size: 14px;
+}
+#nprogress .bar {
+  background: $--color-primary !important; //自定义颜色
+}
+label {
+  font-weight: 700;
+}
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+#app {
+  height: 100%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+div:focus {
+  outline: none;
+}
+
+.clearfix {
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+  }
+}
+
+// main-container global css
+.app-container {
+  padding: 20px;
+
+
+}
+
+.main-text{
+  color: #303133;
+}
+.normal-text{
+  color: #606266;
+}
+.normal-text-bold{
+  color: #606266;
+  font-weight: bold;
+}
+.secondary-text{
+  color: #909399;
+}
+
+.li-title {
+  color: #606266;
+  font-size: 1.17em;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.themeColor{
+  color:$--color-primary;
+}
+.page-title {
+  color: #303133;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 40px;
+}
+.highlight {
+  font-weight: bold;
+  font-size: 22px;
+  color: $--color-primary;
+}
+.right-area {
+  position: absolute;
+  right: 0px;
+  top: 40px;
+}
+.router-link-active{
+  li {
+    color: $--color-primary !important;
+  }
+}
+.error{
+  color: #ff4949;
+  line-height: 20px;
+  margin-bottom: 10px;
+}
+.error-color{
+  color: #ff4949;
+}
+
+.project-list-icon{
+  height: 20px;
+  width: 20px;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.project-large-icon{
+  height: 40px;
+  width: 40px;
+  vertical-align: middle;
+  margin-right: 20px;
+}

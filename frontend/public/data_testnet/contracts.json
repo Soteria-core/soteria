@@ -1,0 +1,73 @@
+[{
+    "icon": "claim",
+    "name": "Compound Sai",
+    "type": "Smart contracts",
+    "yearlyCost": "8.4%",
+    "capacityBNB": "6574",
+    "capacitySOTE": "28392",
+    "address": "0xAF350211414C5DC176421Ea05423F0cC494261fB",
+    "staked": "23432",
+    "APY": null,
+    "description": "Earn 0.1 KEEP / SOTE weekly!",
+    "status": "new"
+},{
+    "icon": "claim",
+    "name": "bZx",
+    "type": "Smart contracts",
+    "yearlyCost": "8.4%",
+    "capacityBNB": "6574",
+    "capacitySOTE": "28392",
+    "address": "0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633",
+    "staked": "23432",
+    "APY": null,
+    "description": "",
+    "status": "new"
+},{
+    "icon": "claim",
+    "name": "Unknown",
+    "type": "Custodians",
+    "yearlyCost": "8.4%",
+    "capacityBNB": "6574",
+    "capacitySOTE": "28392",
+    "address": "0x6e95C8E8557AbC08b46F3c347bA06F8dC012763f",
+    "staked": "23432",
+    "APY": null,
+    "description": "",
+    "status": "incentivized"
+},{
+    "icon": "claim",
+    "name": "Compound ETH",
+    "type": "Custodians",
+    "yearlyCost": "8.4%",
+    "capacityBNB": "6574",
+    "capacitySOTE": "28392",
+    "address": "0x519b70055af55A007110B4Ff99b0eA33071c720a",
+    "staked": "23432",
+    "APY": null,
+    "description": "Earn 0.1 KEEP / SOTE weekly!",
+    "status": "incentivized"
+},{
+    "icon": "claim",
+    "name": "0x V2.1",
+    "type": "Smart contracts",
+    "yearlyCost": "8.4%",
+    "capacityBNB": "6574",
+    "capacitySOTE": "28392",
+    "address": "0x802275979B020F0ec871c5eC1db6e412b72fF20b",
+    "staked": "23432",
+    "APY": null,
+    "description": "",
+    "status": ""
+},{
+    "icon": "claim",
+    "name": "QuotationData",
+    "type": "Smart contracts",
+    "yearlyCost": "8.4%",
+    "capacityBNB": "6574",
+    "capacitySOTE": "28392",
+    "address": "0xc1D2819CE78f3E15Ee69c6738eB1B400A26e632A",
+    "staked": "23432",
+    "APY": null,
+    "description": "",
+    "status": ""
+}]

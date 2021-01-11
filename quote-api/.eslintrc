@@ -1,0 +1,18 @@
+{
+  "env": {
+    "commonjs": true,
+    "es6": true,
+    "node": true,
+    "mocha": true
+  },
+  "extends": "semistandard",
+  "parserOptions": {
+    "ecmaVersion": 2018
+  },
+  "rules": {
+    "padded-blocks": "off",
+    "comma-dangle": ["warn", "always-multiline"],
+    "no-unused-vars": ["warn", { "varsIgnorePattern": "^_unused" }],
+    "no-param-reassign": ["error", { "props": true }]
+  }
+}

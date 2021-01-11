@@ -1,0 +1,2084 @@
+[
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "coverId",
+				"type": "uint256"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "userAddress",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "claimId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "dateSubmit",
+				"type": "uint256"
+			}
+		],
+		"name": "ClaimRaise",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "userAddress",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "claimId",
+				"type": "uint256"
+			},
+			{
+				"indexed": true,
+				"internalType": "bytes4",
+				"name": "typeOf",
+				"type": "bytes4"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "tokens",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "submitDate",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "int8",
+				"name": "verdict",
+				"type": "int8"
+			}
+		],
+		"name": "VoteCast",
+		"type": "event"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "actualClaimLength",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "len",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_coverId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "_from",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_nowtime",
+				"type": "uint256"
+			}
+		],
+		"name": "addClaim",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_voteid",
+				"type": "uint256"
+			}
+		],
+		"name": "addClaimVoteCA",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_voteid",
+				"type": "uint256"
+			}
+		],
+		"name": "addClaimVotemember",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_voter",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_tokens",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "int8",
+				"name": "_verdict",
+				"type": "int8"
+			}
+		],
+		"name": "addVote",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_coverId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "_userAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_datesubmit",
+				"type": "uint256"
+			}
+		],
+		"name": "callClaimEvent",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_userAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes4",
+				"name": "_typeOf",
+				"type": "bytes4"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_tokens",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_submitDate",
+				"type": "uint256"
+			},
+			{
+				"internalType": "int8",
+				"name": "_verdict",
+				"type": "int8"
+			}
+		],
+		"name": "callVoteEvent",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "changeDependentContractAddress",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "int8",
+				"name": "_verdict",
+				"type": "int8"
+			}
+		],
+		"name": "changeFinalVerdict",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_masterAddress",
+				"type": "address"
+			}
+		],
+		"name": "changeMasterAddress",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "claimDepositTime",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "claimRewardPerc",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_member",
+				"type": "address"
+			}
+		],
+		"name": "getAllClaimsByAddress",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "claimarr",
+				"type": "uint256[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			}
+		],
+		"name": "getAllClaimsByIndex",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "coverId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "int8",
+				"name": "vote",
+				"type": "int8"
+			},
+			{
+				"internalType": "uint256",
+				"name": "status",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "dateUpd",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "state12Count",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getAllVoteLength",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "voteCount",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			}
+		],
+		"name": "getAllVotesForClaim",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "ca",
+				"type": "uint256[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "mv",
+				"type": "uint256[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			}
+		],
+		"name": "getCaClaimVotesToken",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "cnt",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			}
+		],
+		"name": "getClaim",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "coverId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "int8",
+				"name": "vote",
+				"type": "int8"
+			},
+			{
+				"internalType": "uint256",
+				"name": "status",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "dateUpd",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "state12Count",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			}
+		],
+		"name": "getClaimCoverId",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "coverid",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			}
+		],
+		"name": "getClaimDateUpd",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "dateupd",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_index",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "_add",
+				"type": "address"
+			}
+		],
+		"name": "getClaimFromNewStart",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "coverid",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "int8",
+				"name": "voteCA",
+				"type": "int8"
+			},
+			{
+				"internalType": "int8",
+				"name": "voteMV",
+				"type": "int8"
+			},
+			{
+				"internalType": "uint256",
+				"name": "statusnumber",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getClaimLength",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "len",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "int8",
+				"name": "_verdict",
+				"type": "int8"
+			}
+		],
+		"name": "getClaimMVote",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "token",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_index",
+				"type": "uint256"
+			}
+		],
+		"name": "getClaimOfEmergencyPauseByIndex",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "coverId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "dateUpd",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "submit",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "claimid",
+				"type": "uint256"
+			}
+		],
+		"name": "getClaimRewardDetail",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "percCA",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "percMV",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokens",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			}
+		],
+		"name": "getClaimState12Count",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "num",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			}
+		],
+		"name": "getClaimStatusNumber",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "statno",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "int8",
+				"name": "_verdict",
+				"type": "int8"
+			}
+		],
+		"name": "getClaimVote",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "token",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint8",
+				"name": "_ca",
+				"type": "uint8"
+			}
+		],
+		"name": "getClaimVoteLength",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "len",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			}
+		],
+		"name": "getClaimsTokenCA",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "accept",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "deny",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			}
+		],
+		"name": "getClaimsTokenMV",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "accept",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "deny",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			}
+		],
+		"name": "getFinalVerdict",
+		"outputs": [
+			{
+				"internalType": "int8",
+				"name": "verdict",
+				"type": "int8"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getFirstClaimIndexToStartVotingAfterEP",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "firstindex",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getFirstClaimIndexToSubmitAfterEP",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "indexToSubmit",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getLengthOfClaimSubmittedAtEP",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "len",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getLengthOfClaimVotingPause",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "len",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			}
+		],
+		"name": "getMemberClaimVotesToken",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "cnt",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_index",
+				"type": "uint256"
+			}
+		],
+		"name": "getPendingClaimDetailsByIndex",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "pendingTime",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "voting",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_voter",
+				"type": "address"
+			}
+		],
+		"name": "getRewardDistributedIndex",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "lastCAvoteIndex",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "lastMVvoteIndex",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "statusNumber",
+				"type": "uint256"
+			}
+		],
+		"name": "getRewardStatus",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "percCA",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "percMV",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_of",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			}
+		],
+		"name": "getTokensClaim",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokens",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "bytes8",
+				"name": "code",
+				"type": "bytes8"
+			}
+		],
+		"name": "getUintParameters",
+		"outputs": [
+			{
+				"internalType": "bytes8",
+				"name": "codeVal",
+				"type": "bytes8"
+			},
+			{
+				"internalType": "uint256",
+				"name": "val",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_index",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "_add",
+				"type": "address"
+			}
+		],
+		"name": "getUserClaimByIndex",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "status",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "coverid",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "claimId",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_add",
+				"type": "address"
+			}
+		],
+		"name": "getUserClaimCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "len",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_add",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			}
+		],
+		"name": "getUserClaimVoteCA",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "idVote",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_add",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			}
+		],
+		"name": "getUserClaimVoteMember",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "idVote",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_voter",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"name": "getVoteAddressCA",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_voter",
+				"type": "address"
+			}
+		],
+		"name": "getVoteAddressCALength",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_voter",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"name": "getVoteAddressMember",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_voter",
+				"type": "address"
+			}
+		],
+		"name": "getVoteAddressMemberLength",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_voteid",
+				"type": "uint256"
+			}
+		],
+		"name": "getVoteDetails",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "tokens",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "int8",
+				"name": "verdict",
+				"type": "int8"
+			},
+			{
+				"internalType": "bool",
+				"name": "rewardClaimed",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_index",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint8",
+				"name": "_ca",
+				"type": "uint8"
+			}
+		],
+		"name": "getVoteToken",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "tok",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_index",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint8",
+				"name": "_ca",
+				"type": "uint8"
+			}
+		],
+		"name": "getVoteVerdict",
+		"outputs": [
+			{
+				"internalType": "int8",
+				"name": "ver",
+				"type": "int8"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_index",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint8",
+				"name": "_ca",
+				"type": "uint8"
+			}
+		],
+		"name": "getVoteVoter",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "voter",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_voteid",
+				"type": "uint256"
+			}
+		],
+		"name": "getVoterVote",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "voter",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "majorityConsensus",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "maxVoteThreshold",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "maxVotingTime",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "minVoteThreshold",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "minVotingTime",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "ms",
+		"outputs": [
+			{
+				"internalType": "contract INXMMaster",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "nxMasterAddress",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "pauseDaysCA",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "payoutRetryTime",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "pendingClaimStart",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_coverId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_dateUpd",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "_submit",
+				"type": "bool"
+			}
+		],
+		"name": "setClaimAtEmergencyPause",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "claimid",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "percCA",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "percMV",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokens",
+				"type": "uint256"
+			}
+		],
+		"name": "setClaimRewardDetail",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_stat",
+				"type": "uint256"
+			}
+		],
+		"name": "setClaimStatus",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_index",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "_submit",
+				"type": "bool"
+			}
+		],
+		"name": "setClaimSubmittedAtEPTrue",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "int8",
+				"name": "_vote",
+				"type": "int8"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_tokens",
+				"type": "uint256"
+			}
+		],
+		"name": "setClaimTokensCA",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "int8",
+				"name": "_vote",
+				"type": "int8"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_tokens",
+				"type": "uint256"
+			}
+		],
+		"name": "setClaimTokensMV",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_dateUpd",
+				"type": "uint256"
+			}
+		],
+		"name": "setClaimdateUpd",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimStartVotingFirstIndex",
+				"type": "uint256"
+			}
+		],
+		"name": "setFirstClaimIndexToStartVotingAfterEP",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_firstClaimIndexToSubmit",
+				"type": "uint256"
+			}
+		],
+		"name": "setFirstClaimIndexToSubmitAfterEP",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_pendingTime",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "_voting",
+				"type": "bool"
+			}
+		],
+		"name": "setPendingClaimDetails",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "_vote",
+				"type": "bool"
+			}
+		],
+		"name": "setPendingClaimVoteStatus",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_voteid",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "claimed",
+				"type": "bool"
+			}
+		],
+		"name": "setRewardClaimed",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_voter",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "caIndex",
+				"type": "uint256"
+			}
+		],
+		"name": "setRewardDistributedIndexCA",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_voter",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "mvIndex",
+				"type": "uint256"
+			}
+		],
+		"name": "setRewardDistributedIndexMV",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_from",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_voteid",
+				"type": "uint256"
+			}
+		],
+		"name": "setUserClaimVoteCA",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_from",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_voteid",
+				"type": "uint256"
+			}
+		],
+		"name": "setUserClaimVoteMember",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			}
+		],
+		"name": "setUserClaimVotePausedOn",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_start",
+				"type": "uint256"
+			}
+		],
+		"name": "setpendingClaimStart",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_claimId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_cnt",
+				"type": "uint256"
+			}
+		],
+		"name": "updateState12Count",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "bytes8",
+				"name": "code",
+				"type": "bytes8"
+			},
+			{
+				"internalType": "uint256",
+				"name": "val",
+				"type": "uint256"
+			}
+		],
+		"name": "updateUintParameters",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "userClaimVotePausedOn",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+]

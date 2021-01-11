@@ -1,0 +1,19 @@
+[{
+  "icon": "secure",
+  "content": "Select projects you think are secure."
+},{
+  "icon": "claim",
+  "content": "Decide how much to deposit in total. Stake your deposit up to ten times across as many projects as you like."
+},{
+  "icon": "rewards",
+  "content": "Earn rewards as cover is purchased."
+},{
+  "icon": "balance",
+  "content": "Increase your deposit or adjust your stakes at any time."
+},{
+  "icon": "deposit",
+  "content": "If a successful claim is made on a project you've staked on, you will lose some or all of your deposit."
+},{
+  "icon": "exchange",
+  "content": "Unstaking requires a 90 days lock up period."
+}]

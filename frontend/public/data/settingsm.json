@@ -1,0 +1,48 @@
+{
+  "contracts": {
+    "MemberRoles": "0x2d1a01E3B6Dd8a3D22660E2a55316C3f4fe2C4CF",
+    "SOTEMaster": "0x0613aC702a7257645D18Ed06F294B7dD1D54972c",
+    "SOTEToken": "0xb0a51D5E242B6A86420Ec34660b14D8B9Cd4d5fc",
+    "TokenController": "0xfDA62a0378F995dEF0DD7b75D686Fff1fA4E4589",
+    "Pool1": "0x0D255C1ACA03D55589BE31897850292dd71F5ECe",
+    "MCR": "0x675239A980edce67647CCc0DE83662A61C9585D6",
+    "wSOTE": "0x541E619858737031A1244A5d0Cd47E5ef480342c",
+    "PooledStaking": "0xE736e9b2A602EB8572A63Df37DD045579583990f",
+    "Quotation": "0x4fBB26d49fbB99542B6E89A4a2f581d5bC8d7748",
+    "QuotationData": "0x757412Bc060Dfed531C61417d6AbaDdDd10d60ED",
+    "Claims": "0x9179cC3AaC0A0C44C4061b824e6F4CeB5297E0C4",
+    "ClaimsData": "0x39779dBfDEC83C68839bc2Cc1d2a462967753fF0",
+    "ClaimsReward": "0xc8b571046d7c8FabCb30d855219e160530c46681"
+  },
+  "networkVersion": 56,
+  "stake": {
+    "minAmountPerContract": 20,
+    "maxAmount": 10
+  },
+  "penaltyRate": 0.975,
+  "quoteapi": "http://api.soteria.finance/v1",
+  "unstakedPendingDay": 90,
+
+  "cover": {
+    "minPeriod": 30,
+    "maxPeriod": 365
+  },
+  "claim": {
+    "stake": {
+      "minPeriod": 30,
+      "maxPeriod": 365
+    }
+  },
+
+  "features": {
+    "start": true,
+    "Membership": true,
+    "Swap": true,
+    "system": false,
+    "Cover": false,
+    "Stake": false,
+    "Claim": false,
+    "Governance": false,
+    "Reward": false
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "name": "quote-engine",
+  "version": "2.0.0",
+  "description": "Quote engine",
+  "main": "src/index.js",
+  "dependencies": {
+    "@openzeppelin/contract-loader": "^0.6.1",
+    "@truffle/contract": "^4.2.13",
+    "bn.js": "^4.11.8",
+    "decimal.js": "^10.2.0",
+    "dotenv": "^8.2.0",
+    "ethereumjs-abi": "^0.6.8",
+    "express": "^4.17.1",
+    "express-http-context": "^1.2.4",
+    "joi": "^17.1.1",
+    "moment": "^2.27.0",
+    "mongodb": "^3.5.2",
+    "mongoose": "^5.8.9",
+    "node-cache": "^5.1.2",
+    "node-fetch": "^2.6.1",
+    "uuid": "^8.2.0",
+    "web3": "^1.2.11",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "@openzeppelin/cli": "^2.8.2",
+    "@openzeppelin/test-environment": "^0.1.4",
+    "eslint": "^6.8.0",
+    "eslint-config-semistandard": "^15.0.0",
+    "eslint-config-standard": "^13.0.1",
+    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "mocha": "^7.0.0",
+    "mongodb-memory-server": "^6.5.0",
+    "nodemon": "^2.0.2",
+    "supertest": "^4.0.2"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "mocha test --exit",
+    "test-unit": "mocha test/unit --exit",
+    "test-integration": "mocha test/integration --exit",
+    "test-e2e": "mocha test/e2e --exit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NexusMutual/quote-api.git"
+  },
+  "author": "shark0der",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NexusMutual/quote-api/issues"
+  },
+  "homepage": "https://github.com/NexusMutual/quote-api#readme"
+}

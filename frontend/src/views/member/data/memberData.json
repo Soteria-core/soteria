@@ -1,0 +1,26 @@
+[{
+  "availableFunds": "Current Balance:",
+  "amount": "balance",
+  "withdrawable": null,
+  "type": "Swap"
+},{
+  "availableFunds":"Cover deposits:",
+  "amount":"coverDeposit",
+  "withdrawable": null,
+  "type": "View"
+},{
+  "availableFunds":"Claim assessment:",
+  "amount":"assessment",
+  "withdrawable": "withdrawAssessment",
+  "type": "Withdraw"
+},{
+  "availableFunds":"Pooled staking:",
+  "amount":"stakeDeposit",
+  "withdrawable": "withdrawStakeDeposit",
+  "type": "Withdraw"
+},{
+  "availableFunds": "Rewards:",
+  "amount":"rewards",
+  "withdrawable": "0",
+  "type": "Withdraw"
+}]

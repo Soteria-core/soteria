@@ -1,0 +1,64 @@
+[{
+    "icon": "claim",
+    "name": "TokenFunctions",
+    "type": "Smart contracts",
+    "staked": "23432",
+    "APY": null,
+    "description": "Earn 0.1 KEEP / SOTE weekly!",
+    "address": "0x43cC330641a875eB6267DC36509b998F05B99aE2",
+    "status": "discard"
+},{
+    "icon": "claim",
+    "name": "Pool1",
+    "type": "Smart contracts",
+    "staked": "232",
+    "APY": null,
+    "description": "",
+    "address": "0x1dcB12D64dFAB13E856C22Db806b6b16E9f598D0",
+    "status": "discard"
+},{
+    "icon": "claim",
+    "name": "Quotation",
+    "type": "Custodians",
+    "staked": "23442",
+    "APY": null,
+    "description": "",
+    "address": "0x786fE8061fBd5ECDe5fdc5fa03b4672F217880e6",
+    "status": "discard"
+},{
+    "icon": "claim",
+    "name": "ClaimsReward",
+    "type": "Custodians",
+    "staked": "3432",
+    "APY": null,
+    "description": "Earn 0.1 KEEP / SOTE weekly!",
+    "address": "0x957eD10385b295D3F9747dfC8d555e92a7B43EE1",
+    "status": "discard"
+},{
+    "icon": "claim",
+    "name": "PooledStaking",
+    "type": "Smart contracts",
+    "staked": "34432",
+    "APY": null,
+    "description": "",
+    "address": "0xE736e9b2A602EB8572A63Df37DD045579583990f",
+    "status": "discard"
+},{
+    "icon": "claim",
+    "name": "wSOTE",
+    "type": "Smart contracts",
+    "staked": "2343",
+    "APY": null,
+    "description": "",
+    "address": "0xBfE7c3Ee5CFB96ef8726d16027da85B55b531E59",
+    "status": "discard"
+},{
+    "icon": "claim",
+    "name": "QuotationData",
+    "type": "Smart contracts",
+    "staked": "13432",
+    "APY": null,
+    "description": "",
+    "address": "0x4C567ea18B40C35c435Af4Ad0AA14B5Fa9e9d47d",
+    "status": "discard"
+}]

@@ -1,0 +1,240 @@
+[
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_uniswapFactoryAdd",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "bytes16",
+				"name": "typeOf",
+				"type": "bytes16"
+			},
+			{
+				"indexed": false,
+				"internalType": "bytes16",
+				"name": "functionName",
+				"type": "bytes16"
+			}
+		],
+		"name": "Liquidity",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "bytes4",
+				"name": "iaCurr",
+				"type": "bytes4"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "tokenAmount",
+				"type": "uint256"
+			}
+		],
+		"name": "Rebalancing",
+		"type": "event"
+	},
+	{
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "fallback"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "bytes4",
+				"name": "_curr",
+				"type": "bytes4"
+			}
+		],
+		"name": "_getCurrencyAssetsBalance",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "caBalance",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "changeDependentContractAddress",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_masterAddress",
+				"type": "address"
+			}
+		],
+		"name": "changeMasterAddress",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newFactoryAddress",
+				"type": "address"
+			}
+		],
+		"name": "changeUniswapFactoryAddress",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "externalLiquidityTrade",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "bytes4",
+				"name": "curr",
+				"type": "bytes4"
+			}
+		],
+		"name": "internalLiquiditySwap",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "ms",
+		"outputs": [
+			{
+				"internalType": "contract INXMMaster",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "nxMasterAddress",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "bytes4[]",
+				"name": "curr",
+				"type": "bytes4[]"
+			},
+			{
+				"internalType": "uint64[]",
+				"name": "rate",
+				"type": "uint64[]"
+			},
+			{
+				"internalType": "uint64",
+				"name": "date",
+				"type": "uint64"
+			},
+			{
+				"internalType": "bool",
+				"name": "bit",
+				"type": "bool"
+			}
+		],
+		"name": "saveIADetails",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "sendEther",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "uniswapFactoryAddress",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address payable",
+				"name": "newPoolAddress",
+				"type": "address"
+			}
+		],
+		"name": "upgradeInvestmentPool",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+]

@@ -1,0 +1,51 @@
+{
+  "id": "2239586",
+  "name": "sote",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1689497",
+      "name": "保险",
+      "font_class": "cover",
+      "unicode": "e63a",
+      "unicode_decimal": 58938
+    },
+    {
+      "icon_id": "2141278",
+      "name": "美元",
+      "font_class": "swap",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "2339808",
+      "name": "美元",
+      "font_class": "reward",
+      "unicode": "e63e",
+      "unicode_decimal": 58942
+    },
+    {
+      "icon_id": "8391892",
+      "name": "assessment-test",
+      "font_class": "assessment",
+      "unicode": "e663",
+      "unicode_decimal": 58979
+    },
+    {
+      "icon_id": "10988380",
+      "name": "Staking",
+      "font_class": "Staking",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "10061205",
+      "name": "交换",
+      "font_class": "jiaohuan",
+      "unicode": "e639",
+      "unicode_decimal": 58937
+    }
+  ]
+}
