@@ -1,0 +1,19 @@
+[{
+  "id": "1",
+  "name": "Advisory Board",
+  "description": "Selected few members that are deeply entrusted by the dApp. An ideal advisory board should be a mix of skills of domain, governance, research, technology, consulting etc to improve the performance of the dApp.",
+  "members": "N/A",
+  "isCurrent": false
+},{
+  "id": "2",
+  "name": "Member",
+  "description": "Represents all users of Soteria.",
+  "members": "N/A",
+  "isCurrent": false
+},{
+  "id": "3",
+  "name": "Owner",
+  "description": "Represents Owner of Soteria.",
+  "members": "N/A",
+  "isCurrent": false
+}]
