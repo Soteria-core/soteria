@@ -8,7 +8,7 @@
           <el-card>
             <div slot="header" class="clearfix">
               <span>Top Up</span>
-              <el-link v-if="showReset" @click="options.perAmount='0'" type="primary" style="float: right; padding: 3px 0" :underline="false">Reset</el-link>
+              <el-link v-if="showReset" @click="options.perAmount=''" type="primary" style="float: right; padding: 3px 0" :underline="false">Reset</el-link>
               <el-link v-else @click="options.perAmount=balance.toString()" type="success" :underline="false" style="float: right; padding: 3px 0">Max</el-link>
             </div>
             <div>

@@ -1,16 +1,173 @@
-{
-
-  "categories": [
-    {"name": "Update Token Parameters",             "index": "20", "contractName": "TokenData",     "method": "updateUintParameters", "params": ["bytes8", "uint"], "description": "xxx"},
-    {"name": "Update Risk Assessment Parameters",   "index": "21", "contractName": "TokenData",     "method": "updateUintParameters", "params": ["bytes8", "uint"], "description": "xxx"},
-    {"name": "Update Governance Parameters",        "index": "22", "contractName": "Governance",    "method": "updateUintParameters", "params": ["bytes8", "uint"], "description": "xxx"},
-    {"name": "Update Quotation Parameters",         "index": "23", "contractName": "QuotationData", "method": "updateUintParameters", "params": ["bytes8", "uint"], "description": "xxx"},
-    {"name": "Update Claims Assessment Parameters", "index": "24", "contractName": "ClaimsData",   "method": "updateUintParameters", "params": ["bytes8", "uint"], "description": "xxx"},
-    {"name": "Update Investment Module Parameters", "index": "25", "contractName": "PoolData",     "method": "updateUintParameters", "params": ["bytes8", "uint"], "description": "xxx"},
-    {"name": "Update Capital Model Parameters",     "index": "26", "contractName": "PoolData",     "method": "updateUintParameters", "params": ["bytes8", "uint"], "description": "xxx"},
-    {"name": "Token Controller Parameters",         "index": "35", "contractName": "TokenControl", "method": "updateUintParameters", "params": ["bytes8", "uint"], "description": "xxx"},
-    {"name": "Update MCR Parameters",               "index": "36", "contractName": "MCR",          "method": "updateUintParameters", "params": ["bytes8", "uint"], "description": "xxx"}
-
-  ]
-
-}
+[
+  {
+    "name": "Update Token Parameters",
+    "index": "20",
+    "contractName": "TokenData",
+    "method": "updateUintParameters",
+    "params": [
+      {
+        "name": "Code",
+        "desc": "Code of parameter to update",
+        "type": "bytes8"
+      },
+      {
+        "name": "Value",
+        "desc": "Proposed value of parameter",
+        "type": "uint256"
+      }
+    ],
+    "description": ""
+  },
+  {
+    "name": "Update Risk Assessment Parameters",
+    "index": "21",
+    "contractName": "TokenData",
+    "method": "updateUintParameters",
+    "params": [
+      {
+        "name": "Code",
+        "desc": "Code of parameter to update",
+        "type": "bytes8"
+      },
+      {
+        "name": "Value",
+        "desc": "Proposed value of parameter",
+        "type": "uint256"
+      }
+    ],
+    "description": ""
+  },
+  {
+    "name": "Update Governance Parameters",
+    "index": "22",
+    "contractName": "Governance",
+    "method": "updateUintParameters",
+    "params": [
+      {
+        "name": "Code",
+        "desc": "Code of parameter to update",
+        "type": "bytes8"
+      },
+      {
+        "name": "Value",
+        "desc": "Proposed value of parameter",
+        "type": "uint256"
+      }
+    ],
+    "description": ""
+  },
+  {
+    "name": "Update Quotation Parameters",
+    "index": "23",
+    "contractName": "QuotationData",
+    "method": "updateUintParameters",
+    "params": [
+      {
+        "name": "Code",
+        "desc": "Code of parameter to update",
+        "type": "bytes8"
+      },
+      {
+        "name": "Value",
+        "desc": "Proposed value of parameter",
+        "type": "uint256"
+      }
+    ],
+    "description": ""
+  },
+  {
+    "name": "Update Claims Assessment Parameters",
+    "index": "24",
+    "contractName": "ClaimsData",
+    "method": "updateUintParameters",
+    "params": [
+      {
+        "name": "Code",
+        "desc": "Code of parameter to update",
+        "type": "bytes8"
+      },
+      {
+        "name": "Value",
+        "desc": "Proposed value of parameter",
+        "type": "uint256"
+      }
+    ],
+    "description": ""
+  },
+  {
+    "name": "Update Investment Module Parameters",
+    "index": "25",
+    "contractName": "PoolData",
+    "method": "updateUintParameters",
+    "params": [
+      {
+        "name": "Code",
+        "desc": "Code of parameter to update",
+        "type": "bytes8"
+      },
+      {
+        "name": "Value",
+        "desc": "Proposed value of parameter",
+        "type": "uint256"
+      }
+    ],
+    "description": ""
+  },
+  {
+    "name": "Update Capital Model Parameters",
+    "index": "26",
+    "contractName": "PoolData",
+    "method": "updateUintParameters",
+    "params": [
+      {
+        "name": "Code",
+        "desc": "Code of parameter to update",
+        "type": "bytes8"
+      },
+      {
+        "name": "Value",
+        "desc": "Proposed value of parameter",
+        "type": "uint256"
+      }
+    ],
+    "description": ""
+  },
+  {
+    "name": "Token Controller Parameters",
+    "index": "35",
+    "contractName": "TokenControl",
+    "method": "updateUintParameters",
+    "params": [
+      {
+        "name": "Code",
+        "desc": "Code of parameter to update",
+        "type": "bytes8"
+      },
+      {
+        "name": "Value",
+        "desc": "Proposed value of parameter",
+        "type": "uint256"
+      }
+    ],
+    "description": ""
+  },
+  {
+    "name": "Update MCR Parameters",
+    "index": "36",
+    "contractName": "MCR",
+    "method": "updateUintParameters",
+    "params": [
+      {
+        "name": "Code",
+        "desc": "Code of parameter to update",
+        "type": "bytes8"
+      },
+      {
+        "name": "Value",
+        "desc": "Proposed value of parameter",
+        "type": "uint256"
+      }
+    ],
+    "description": ""
+  }
+]

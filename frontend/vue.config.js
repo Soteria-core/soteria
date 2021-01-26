@@ -33,6 +33,7 @@ module.exports = {
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
   devServer: {
+    host: "127.0.0.1",
     port: port,
     hot: true,
     open: true,
@@ -46,6 +47,13 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           ['^/quote-api']: ''
+        }
+      },
+      ["/bnb-price"]: {
+        target: "https://app.soteria.finance/bnb-price/",
+        changeOrigin: true,
+        pathRewrite: {
+          ['^/bnb-price']: ''
         }
       }
     }

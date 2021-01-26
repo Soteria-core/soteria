@@ -19,6 +19,7 @@ import BNBAndSOTE from '@/views/swap/BNBAndSOTE'
 import wSOTEAndSOTE from '@/views/swap/wSOTEAndSOTE'
 import { watch } from '@/utils/watch.js';
 import { mapGetters } from 'vuex';
+import { getBNBQuote } from '@/api/common.js'
 
 export default {
   components:{
@@ -55,6 +56,7 @@ export default {
     },
     async initContract(){
       this.refreshAllowance();
+      getBNBQuote(this);
     },
     handleClick(tab){
       this.refreshAllowance();
@@ -72,7 +74,6 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/element-variables.scss';
 #swap{
-  
+
 }
 </style>
-

@@ -48,7 +48,7 @@ export default {
       options: {
         active: 0,
         selectedProject: [],
-        perAmount: 0, //本次充值金额，第一次不能小于20，后面可以为0
+        perAmount: '', //本次充值金额，第一次不能小于20，后面可以为0
         totalAmount: 0, //本次之前的累计充值金额
         maxTotalAmount: 0, // 所有合约投入金额之和的上限，累计充值金额的10倍
         terms: [],

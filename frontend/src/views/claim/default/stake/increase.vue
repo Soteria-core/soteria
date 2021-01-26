@@ -72,7 +72,7 @@ export default {
   data() {
     return {
       form:{
-        amount: 0,
+        amount: '',
       },
       TokenController: null,
       loading: false,

@@ -5,6 +5,7 @@ import highlight from '@/components/Common/highlight'
 import DegreesBadge from '@/components/DegreesBadge/index'
 import GrantTokens from '@/components/GrantTokens/index'
 import StartMembership from '@/components/StartMembership/index'
+import LiVoteChart from '@/components/VoteChart/index'
 
 // 这里是重点
 const CustomComponents = {
@@ -16,6 +17,7 @@ const CustomComponents = {
     Vue.component('DegreesBadge', DegreesBadge);
     Vue.component('GrantTokens', GrantTokens);
     Vue.component('StartMembership', StartMembership);
+    Vue.component('LiVoteChart', LiVoteChart);
   }
 }
 

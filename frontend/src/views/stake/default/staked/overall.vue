@@ -20,7 +20,7 @@
           <el-row class="highlight" :gutter="20">
             <el-col :span="8">{{staked}} SOTE</el-col>
             <el-col :span="8">{{depositUsage}}%</el-col>
-            <el-col :span="8">{{$etherToNumber(member.rewards)}} SOTE</el-col>
+            <el-col :span="8">{{toFixed(options.rewards)}} SOTE</el-col>
           </el-row>
         </div>
       </el-form>
@@ -81,7 +81,10 @@ export default {
     },
     stats(){
       this.$router.push("/system/stake/stats");
-    }
+    },
+    toFixed(value){
+      return BigNumber(value).toFixed(2, 1);
+    },
   }
 }
 </script>

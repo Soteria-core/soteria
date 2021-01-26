@@ -35,9 +35,9 @@ export default {
         active: 0,
         ownerContracts: [],
         curContract: null,
-        amount: 0,
+        amount: '',
         currency: "BNB",
-        period: 0, //周期，天
+        period: '', //周期，天
         quote: null,
         getQuoteTime: null,
         expiresTime: null,

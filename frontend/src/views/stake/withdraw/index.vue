@@ -60,12 +60,12 @@ export default {
       const params = this.$route.params;
       if(params && params.stakedProjects){
         let options = JSON.parse(JSON.stringify(params));
-        options.withdraw = 0;
+        options.withdraw = '';
         this.options = options;
       } else {
-        this.$router.push("/system/stake/default");  
+        this.$router.push("/system/stake/default");
       }
-      
+
       if(this.web3Status === this.WEB3_STATUS.AVAILABLE){
         this.initContract();
       }

@@ -50,7 +50,7 @@ export default {
             this.account = window.ethereum.selectedAddress;
             const defaultNetwork = settings.networkVersion;
             const currentNetwork = this.web3Provider.networkVersion;
-            store.dispatch('settings/changeSetting', {key: "currentNetwork", value: currentNetwork});
+            store.dispatch('settings/changeSetting', {key: "currentVersion", value: currentNetwork});
             if(defaultNetwork == currentNetwork){
               // 网络一致时才初始化合约相关的数据
               console.info("Network is current, initializing global events.");

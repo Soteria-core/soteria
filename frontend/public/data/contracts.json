@@ -1,73 +1,23 @@
-[{
-    "icon": "/images/claim.svg",
-    "name": "Compound Sai",
+[
+  {
+    "icon": "/images/pancake.svg",
+    "name": "PancakeSwap",
     "type": "Smart contracts",
-    "yearlyCost": "8.4%",
-    "capacityBNB": "",
-    "capacitySOTE": "28392",
-    "address": "0xAF350211414C5DC176421Ea05423F0cC494261fB",
-    "staked": "23432",
+    "yearlyCost": null,
+    "address": "0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F",
     "APY": null,
-    "description": "Earn 0.1 KEEP / SOTE weekly!",
+    "description": "The #1 AMM and yield farm on Binance Smart Chain.",
     "status": "new"
-},{
-    "icon": "/images/logo.png",
-    "name": "bZx",
+  },
+
+  {
+    "icon": "/images/bakery.png",
+    "name": "BakerySwap",
     "type": "Smart contracts",
-    "yearlyCost": "8.4%",
-    "capacityBNB": "",
-    "capacitySOTE": "28392",
-    "address": "0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633",
-    "staked": "23432",
+    "yearlyCost": null,
+    "address": "0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5",
     "APY": null,
-    "description": "",
+    "description": "The most complete all-in-one project in BSC: AMM + NFT Marketplace. ",
     "status": "new"
-},{
-    "icon": "/images/claim.svg",
-    "name": "Unknown",
-    "type": "Custodians",
-    "yearlyCost": "8.4%",
-    "capacityBNB": "",
-    "capacitySOTE": "28392",
-    "address": "0x6e95C8E8557AbC08b46F3c347bA06F8dC012763f",
-    "staked": "23432",
-    "APY": null,
-    "description": "",
-    "status": "incentivized"
-},{
-    "icon": "/images/claim.svg",
-    "name": "Compound ETH",
-    "type": "Custodians",
-    "yearlyCost": "8.4%",
-    "capacityBNB": "",
-    "capacitySOTE": "28392",
-    "address": "0x519b70055af55A007110B4Ff99b0eA33071c720a",
-    "staked": "23432",
-    "APY": null,
-    "description": "Earn 0.1 KEEP / SOTE weekly!",
-    "status": "incentivized"
-},{
-    "icon": "/images/claim.svg",
-    "name": "0x V2.1",
-    "type": "Smart contracts",
-    "yearlyCost": "8.4%",
-    "capacityBNB": "",
-    "capacitySOTE": "28392",
-    "address": "0x802275979B020F0ec871c5eC1db6e412b72fF20b",
-    "staked": "23432",
-    "APY": null,
-    "description": "",
-    "status": ""
-},{
-    "icon": "/images/claim.svg",
-    "name": "QuotationData",
-    "type": "Smart contracts",
-    "yearlyCost": "8.4%",
-    "capacityBNB": "",
-    "capacitySOTE": "28392",
-    "address": "0xc1D2819CE78f3E15Ee69c6738eB1B400A26e632A",
-    "staked": "23432",
-    "APY": null,
-    "description": "",
-    "status": ""
-}]
+  }
+]

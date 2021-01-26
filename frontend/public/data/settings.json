@@ -4,7 +4,10 @@
     "SOTEMaster": "0x5935F31bc8d219dC507086d1FD501D27e910bD88",
     "SOTEToken": "0x9846E675F6B86c9e5ee6fb3024D4C1A383C98b3a",
     "TokenController": "0xDBf12f92B545828ec7219b0Ff6F85460fd8EcbBc",
+    "TokenFunctions": "0x8fDaCCF2f794DA0f64d9139e33CF0ccCB007830c",
+    "TokenData": "0xf46Ad031D3b6a3E196462d14244B4A7F40A604F7",
     "Pool1": "0x9417062E85BdA03446DDe2bDc483EF05202a9C1F",
+    "PoolData": "0xC2ccde091322a6d2e4fB5B3b030d4bD50c4cF081",
     "MCR": "0x17F715f58a6845360561a1f5673245887b4F378E",
     "wSOTE": "0x5361a04f24C02DA4cBF629A75505D3598D3A3fDB",
     "PooledStaking": "0x4BF0Bece0D145b2204eDBC545E20556781457cFd",
@@ -13,9 +16,11 @@
     "Claims": "0x94896d3035888eAD328D75597101b332262D8633",
     "ClaimsData": "0x48d4873C649fe67359E5E1E6D6dA26079D7e52c1",
     "ClaimsReward": "0x39970c847670B90A443BEd4E1fE0b844a796541b",
-    "ProposalCategory": "0xD2CEd95757781B84Da50E0dC6d7Ac6204A6d2C91",
+    "ProposalCategory": "0xa0542B3d034a63A5594E561F0a4ADe2D428C6615",
+    "TokenData": "0xf46Ad031D3b6a3E196462d14244B4A7F40A604F7",
     "Governance": "0x1C1e631C023F4617FeDe347A3f4062fb21731935"
   },
+
   "networkVersion": 97,
   "stake": {
     "minAmountPerContract": 20,
@@ -34,6 +39,9 @@
   "penaltyRate": 0.975,
   "quoteapi": "http://api.soteria.fund/v1",
   "unstakedPendingDay": 90,
+  "bnbQuotesApi": "https://pro-api.coinmarketcap.com/v1",
+  "bnbQuotesKey": "59be5949-c14a-4f89-9ba2-2dc09c3f3993",
+  "uniqueAddresses": "https://testnet.bscscan.com/token/0x9846E675F6B86c9e5ee6fb3024D4C1A383C98b3a",
   "features": {
     "start": true,
     "Membership": true,
@@ -43,6 +51,7 @@
     "Stake": true,
     "Claim": true,
     "Governance": true,
-    "Reward": true
+    "Reward": true,
+    "Stats": true
   }
 }

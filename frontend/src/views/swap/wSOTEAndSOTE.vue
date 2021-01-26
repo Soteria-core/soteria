@@ -79,7 +79,7 @@ export default {
         loadingText: "loading...",
         wSOTE: null, // 合约
         form: {
-            amount: "0",
+            amount: "",
         },
         canWrapSOTE: null,
         canUnWrapSOTE: null,

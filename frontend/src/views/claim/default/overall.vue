@@ -52,6 +52,7 @@ export default {
     },
     howItWorks(){
       // 查看pdf
+      window.open('pdf/SmartContractCoverWording.pdf');
     }
   }
 }

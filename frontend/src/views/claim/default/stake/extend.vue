@@ -59,7 +59,7 @@ export default {
     return {
       form:{
         amount: 0,
-        period: 0,
+        period: '',
       },
       rules: {
         period: [

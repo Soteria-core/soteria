@@ -3,7 +3,7 @@
     element-loading-text="Payment membership fee in progress...">
     <el-row>
       <h1 class="main-text">Welcome</h1>
-      <label class="normal-text">Being a member gives you the ability to swap SOTE tokens, buy cover, and earn rewards from staking, governance and claim assessment.</label>
+      <label class="normal-text">Being a member gives you the ability to swap SOTE tokens, buy cover, and earn rewards from staking, governance and claim assessments.</label>
     </el-row>
     <el-divider></el-divider>
     <el-row>
@@ -13,7 +13,7 @@
       <LiList :listData="listData">
         <template slot="title" slot-scope="scope">
           <svg-icon icon-class="circle" class="icon error-color"></svg-icon>
-          {{scope.title}}
+          {{scope.title.replace(/\$\{memberFee\}/g, $etherToValue(memberFee).toString())}}
         </template>
       </LiList>
     </el-row>
@@ -21,7 +21,7 @@
     <el-row class="line-height-1">
       <LiTitle>Mutual Requirements</LiTitle>
       <span class="secondary-text">Membership gives you the rights to the assets of the mutual and involves a one-off membership fee of
-        <span class="normal-text-bold">0.1 BNB</span>.
+        <span class="normal-text-bold">{{$etherToValue(memberFee)}} BNB</span>.
       </span>
       <el-row>
         <span class="secondary-text">Due to various laws and regulations
@@ -57,8 +57,10 @@
 import styles from '@/styles/element-variables.scss';
 import membershipJson from '@/views/member/data/membership.json';
 import MemberRolesContract from '@/services/MemberRoles';
+import TokenDataContract from '@/services/TokenData';
 import { mapGetters } from 'vuex';
 import { watch } from '@/utils/watch.js';
+import { BigNumber } from 'bignumber.js';
 
 export default {
   name: 'Register',
@@ -70,7 +72,9 @@ export default {
       countries: ["Mexico","Syria","Ethiopia","North Korea","Trinidad and Tobago",
         "India","Russia","Tunisia","Iran","Serbia","Vanuatu","Iraq","South Korea","Yemen","Japan","Sri Lanka"],
       MemberRoles: null,
+      TokenData: null,
       registerDisable: false,
+      memberFee: 0,
     }
   },
   computed: {
@@ -95,13 +99,23 @@ export default {
     },
     async initContract(){
       this.MemberRoles = await this.getContract(MemberRolesContract);
+      this.TokenData = await this.getContract(TokenDataContract);
       console.info("MemberRoles:", this.MemberRoles);
+      this.getMemberFee();
+    },
+    async getMemberFee(){
+      const instance = this.TokenData.getContract().instance;
+      const memberFee = await instance.joiningFee();
+      this.memberFee = memberFee.toString();
     },
     async register(){
       this.loading = true;
       const contract = this.MemberRoles.getContract();
+      if(BigNumber(this.memberFee).lte(0)){
+        await this.getMemberFee();
+      }
       // 转成string，否则prod打包后会报错
-      const fee = this.$ether("0.1").toString();
+      const fee = this.memberFee.toString();
       this.registerDisable = true;
       contract.instance.payJoiningFee(this.$CustomWeb3.account, { from: this.$CustomWeb3.account, value: fee }).then(response => {
         console.info(response, response.toString());

@@ -30,6 +30,9 @@ const state = {
      * Rewards: ClaimsReward合约getAllPendingRewardOfUser(address _add)
      */
     rewards: 0,
+
+    // BNB的美元报价
+    bnbQuote: 0
   }
 }
 

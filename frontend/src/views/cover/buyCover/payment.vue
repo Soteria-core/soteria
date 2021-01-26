@@ -107,13 +107,7 @@ export default {
   watch: {
     web3Status: watch.web3Status,
     currency(newVal){
-      if(newVal == "SOTE"){
-        this.$Bus.$emit(this.$EventNames.refreshAllowance, this.settings.contracts.TokenController, "TokenController");
-        this.$Bus.$emit(this.$EventNames.setNeedAllowance, "TokenController", this.options.quote.priceInNXM.toString());
-      }else{
-        this.$Bus.$emit(this.$EventNames.resetAllowance, "TokenController");// 删除授权请求
-        this.$Bus.$emit(this.$EventNames.refreshBalance, this);
-      }
+
     }
   },
   created(){
@@ -129,6 +123,8 @@ export default {
       }
     },
     async initContract(){
+	    this.$Bus.$emit(this.$EventNames.refreshAllowance, this.settings.contracts.TokenController, "TokenController");
+	    this.$Bus.$emit(this.$EventNames.setNeedAllowance, "TokenController", this.options.quote.priceInNXM.toString());
       this.Quotation = await this.getContract(QuotationContract);
       this.Pool1 = await this.getContract(Pool1Contract);
     },

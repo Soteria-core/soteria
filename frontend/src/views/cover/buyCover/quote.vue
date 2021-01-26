@@ -59,7 +59,7 @@
                 <li>the custodian gets hacked and you lose more than 10% of your funds.</li>
                 <li>withdrawals from the custodian are halted for more than 90 days.</li>
               </ul>
-              Check out full details <el-button type="text">here</el-button>.
+              Check out full details <el-button type="text" @click="howItWorks">here</el-button>.
             </el-col>
           </el-row>
           </el-form>
@@ -139,22 +139,30 @@ export default {
       return newValue;
     },
     validateAmount(rule, value, callback){
-        if(BigNumber(value).comparedTo(1)<0){
-            callback(new Error(`Enter an amount of at least 1 BNB!`));
-            return;
-        }
-        if(BigNumber(value).comparedTo(this.options.curContract.capacityBNB)>0){
-            callback(new Error(`Enter an amount of ${this.options.curContract.capacityBNB} BNB maximum!`));
-            return;
-        }
-        callback();
+      if(value.replace(/\s/g, "").length==0){
+        callback(new Error(`Enter an amount of at least 1 BNB!`));
+        return;
+      }
+      if(BigNumber(value).comparedTo(1)<0){
+        callback(new Error(`Enter an amount of at least 1 BNB!`));
+        return;
+      }
+      if(BigNumber(value).comparedTo(this.options.curContract.capacityBNB)>0){
+        callback(new Error(`Enter an amount of ${this.options.curContract.capacityBNB} BNB maximum!`));
+        return;
+      }
+      callback();
     },
     validatePeriod(rule, value, callback){
-        if(BigNumber(value).lt(this.settings.cover.minPeriod) || BigNumber(value).gt(this.settings.cover.maxPeriod)){
-            callback(new Error(`Enter a period of ${this.settings.cover.minPeriod} days minimum and ${this.settings.cover.maxPeriod} days maximum!`));
-            return;
-        }
-        callback();
+      if(value.replace(/\s/g, "").length==0){
+        callback(new Error(`Enter a period of ${this.settings.cover.minPeriod} days minimum and ${this.settings.cover.maxPeriod} days maximum!`));
+        return;
+      }
+      if(BigNumber(value).lt(this.settings.cover.minPeriod) || BigNumber(value).gt(this.settings.cover.maxPeriod)){
+        callback(new Error(`Enter a period of ${this.settings.cover.minPeriod} days minimum and ${this.settings.cover.maxPeriod} days maximum!`));
+        return;
+      }
+      callback();
     },
     getQuote(){
       this.$refs.form.validate((valid)=>{
@@ -185,6 +193,10 @@ export default {
       }).catch(e=>{
         this.loading = false;
       });
+    },
+    howItWorks(){
+      // 查看pdf
+      window.open('pdf/SmartContractCoverWording.pdf');
     }
   }
 }

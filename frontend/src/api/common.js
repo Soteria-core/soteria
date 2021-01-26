@@ -116,3 +116,19 @@ export async function getRate(vue){
     return false;
   }
 }
+
+// 查询BNB和美元汇率
+export async function getBNBQuote(vue){
+  request({
+    url:`/bnb-price/`,
+    method:'get',
+  }).then(res => {
+    console.log(res)
+    vue.$store.dispatch("member/changeMember", {
+      key: "bnbQuote",
+      value: res.data.price
+    });
+  }).catch(e => {
+
+  });
+}

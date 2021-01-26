@@ -77,7 +77,8 @@ export default {
       'web3',
       'member',
       'web3Status',
-	  'settings'
+      'settings',
+      'currentVersion'
     ]),
     hasCoverAndStake(){
       return BigNumber(this.member.coverDeposit).gt(0) || BigNumber(this.member.assessment).gt(0) || BigNumber(this.member.stakeDeposit).gt(0);
@@ -108,9 +109,10 @@ export default {
     initData(){
       if(this.web3Status === this.WEB3_STATUS.AVAILABLE){
         this.initContract();
-		if(this.settings.networkVersion == 97){
-		  getMemberData(this);
-		}
+        console.info(this.settings.networkVersion, this.currentVersion);
+        if(this.settings.networkVersion == this.currentVersion){
+          getMemberData(this);
+        }
       }
     },
     async initContract(){
@@ -157,6 +159,7 @@ export default {
     },
     getColumnValue(row, column){
       if(column.property == "amount"){
+        console.info(row.amount, this.member[row.amount]);
         return this.$etherToNumber(this.member[row.amount]);
       }
       if(column.property == "withdrawable" && row.withdrawable && row.withdrawable!="0"){
@@ -214,7 +217,7 @@ export default {
         this.withdrawAssessment();
         return;
       }
-      this.$message.info(`Click row ${row.availableFunds}`);
+      this.$router.replace("/system/reward");
     },
     withdrawAssessment(){
       this.loading = true;

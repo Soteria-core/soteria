@@ -7,5 +7,6 @@ const getters = {
   contracts: state => state.contract.contracts,
   member: state => state.member.member,
   settings: state => state.settings.settings,
+  currentVersion: state => state.settings.currentVersion,
 }
 export default getters

@@ -162,6 +162,12 @@ export const constantRoutes = [
         name: 'Reward',
         component: () => import('@/views/reward/index'),
         meta: { title: 'Reward', icon: 'iconfont icon-reward' }
+      },
+      {
+        path: 'stats',
+        name: 'Stats',
+        component: () => import('@/views/stats/index'),
+        meta: { title: 'Stats', icon: 'el-icon-s-data' }
       }
     ]
   },

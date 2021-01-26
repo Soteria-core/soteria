@@ -52,7 +52,7 @@
     <el-table-column width="100"
       label="ACTIONS">
       <template slot-scope="scope">
-        <el-link type="primary" :disabled="cannotClaim(scope.row)" :underline="false" @click="claim(scope.row)">Claim</el-link>
+        <el-link type="primary" :disabled="scope.row.cannotClaim" :underline="false" @click="claim(scope.row)">Claim</el-link>
       </template>
     </el-table-column>
   </el-table>
@@ -62,6 +62,7 @@
 import { watch } from '@/utils/watch.js';
 import { mapGetters } from 'vuex';
 import QuotationDataContract from '@/services/QuotationData';
+import TokenFunctionsContract from '@/services/TokenFunctions';
 import Moment from 'moment';
 import { getCoverContracts, loadCover } from '@/api/cover.js';
 import { BigNumber } from 'bignumber.js';
@@ -76,6 +77,7 @@ export default {
       loading: false,
       activeCovers: [],
       QuotationData: null,
+      TokenFunctions: null,
       coverStatus: [ "Active", "Claim Accepted", "Claim Denied", "Cover Expired", "Claim Submitted", "Requested" ],
       coverStatusColors: [ "", "success", "danger", "warning", "", "" ],
       key: "member_cover_",
@@ -113,6 +115,7 @@ export default {
     },
     async initContract(){
       this.QuotationData = await this.getContract(QuotationDataContract);
+      this.TokenFunctions = await this.getContract(TokenFunctionsContract);
       this.getActiveCovers();
     },
     async getActiveCovers(){
@@ -129,6 +132,7 @@ export default {
         for(let i=ids.length - 1; i>=0; i--){
           try{
             let cover = await loadCover(this, ids[i], true, contracts);
+            cover.cannotClaim = await this.cannotClaim(cover);
             this.activeCovers.push(cover);
           }catch(e){
             console.error(e);
@@ -136,7 +140,6 @@ export default {
         }
       }catch(e){
         this.loading = false;
-        console.info(e);
         this.$message.error(e.message);
       }finally{
         this.loading = false;
@@ -151,10 +154,22 @@ export default {
     formatStatus(row){
 
     },
-    cannotClaim(row){
-      const canClaimStatus = (row.status==1 ||row.status==3 || row.status==4 || row.status==5);
-      
-      return canClaimStatus || (row.status==2 && this.options.claims.filter(item => BigNumber(item.coverId).eq(row.cid)).length>=2);
+    async cannotClaim(row){
+      if(row.status == 0){
+        return false;
+      }
+      let cannotClaimStatus = (row.status==1 ||row.status==3 || row.status==4 || row.status==5);
+      if(cannotClaimStatus){
+        return cannotClaimStatus;
+      }
+
+      cannotClaimStatus = row.status==2 && this.options.claims.filter(item => BigNumber(item.coverId).eq(row.cid)).length>=2;
+      if(cannotClaimStatus){
+        return cannotClaimStatus;
+      }
+      const instance = this.TokenFunctions.getContract().instance;
+      cannotClaimStatus = await instance.getLockedCNAgainstCover(row.cid.toString());
+      return BigNumber(cannotClaimStatus).eq(0);
     },
     claim(row){
       this.$router.push({ name: this.$RouteNames.COVER_CLAIM, params: JSON.parse(JSON.stringify(row)) });

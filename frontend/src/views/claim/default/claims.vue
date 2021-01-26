@@ -191,6 +191,7 @@ export default {
               const data = await instance.getClaimStatusNumber(curload.toString());
               const statno = data.statno.toString();
               claim.status = statno;
+              await this.expireTime(claim);
               if(BigNumber(statno).gt(5)){
                 claim.finished = true;
               }else{
@@ -217,6 +218,7 @@ export default {
           claim.status = claimData.status.toString();
           claim.vote = claimData.vote.toString();
 
+          await this.expireTime(claim);
           await this.getVoteId(claim);
           const cover = await loadCover(this, claim.coverId, true, this.contracts);
           claim.cover = cover;
@@ -242,6 +244,13 @@ export default {
         }
       }
     },
+    async expireTime(claim){
+      if(claim.status == 3){
+        const instance = this.ClaimsData.getContract().instance;
+        const maxVotingTime = await instance.maxVotingTime();
+        claim.maxVotingTime = maxVotingTime.toString();
+      }
+    },
     async getVoteId(claim){
       const instance = this.ClaimsData.getContract().instance;
       const caVoteId = await instance.getUserClaimVoteCA(this.member.account, claim.claimId);
@@ -263,10 +272,17 @@ export default {
       //this.$router.push({ name: this.$RouteNames.COVER_CLAIM, params: JSON.parse(JSON.stringify(row)) });
     },
     canAssess(row){
+      if(parseInt(row.status) == 3){
+        const curTime = new Date().getTime();
+        const expireTime = BigNumber(row.dateUpd).plus(row.maxVotingTime).times(1000);
+        if(expireTime.lt(curTime)){
+          return false;
+        }
+      }
       return BigNumber(row.status).lt(6);
     },
     assessed(row){
-      return !this.member.isMember || (BigNumber(row.status).eq(0) && BigNumber(row.caVoteId).gt(0)) 
+      return !this.member.isMember || (BigNumber(row.status).eq(0) && BigNumber(row.caVoteId).gt(0))
         || (BigNumber(row.status).lt(6) && BigNumber(row.mvVoteId).gt(0));
     }
   }

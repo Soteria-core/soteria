@@ -8,7 +8,7 @@
         <el-col :span="4"><el-button type="primary" round class="withdraw-btn" @click="withdrawAll">Withdraw all</el-button></el-col>
       </el-row>
     </el-card>
-    <channel />
+    <channel @rewardsData="rewardsData" />
   </div>
 </template>
 
@@ -25,6 +25,7 @@ export default {
     return {
       loading: false,
       ClaimsReward: null,
+      rewards: [],
     }
   },
   computed: {
@@ -52,17 +53,31 @@ export default {
     getRewards(){
       getRewards(this);
     },
+    rewardsData(rewards){
+      this.rewards = rewards;
+    },
     withdrawAll(){
       this.loading = true;
       const instance = this.ClaimsReward.getContract().instance;
-      instance.claimPendingReward(20, { from: this.member.account }).then(res => {
-        this.$message.success("Withdraw all successfully.");
-        this.getRewards();
-        this.loading = false;
-      }).catch(e => {
-        this.$message.error(e.message);
-        this.loading = false;
-      });
+      if(this.rewards[2] && this.rewards[2] > 0){
+        instance.claimAllPendingReward(20, { from: this.member.account }).then(res => {
+          this.$message.success("Withdraw all successfully.");
+          this.getRewards();
+          this.loading = false;
+        }).catch(e => {
+          this.$message.error(e.message);
+          this.loading = false;
+        });
+      }else{
+        instance.claimPendingReward(20, { from: this.member.account }).then(res => {
+          this.$message.success("Withdraw all successfully.");
+          this.getRewards();
+          this.loading = false;
+        }).catch(e => {
+          this.$message.error(e.message);
+          this.loading = false;
+        });
+      }
     }
   }
 }

@@ -4,7 +4,7 @@
         <el-form :model="form" :rules="rules" ref="form" :disabled="!member.isMember">
         <el-row>
             <h2 class="main-text">Swap</h2>
-            <div class="normal-text">Buy or sell SOTE tokens. SOTE tokens grant you proportional power in the Soteria.</div>
+            <div class="normal-text">Buy or sell SOTE tokens. SOTE tokens grant you proportional power in Soteria.</div>
         </el-row>
         <el-divider></el-divider>
         <el-row>
@@ -33,7 +33,7 @@
                         </el-input>
                     </el-form-item>
                   </div>
-                  <div class="right-rate" style="color:#FFFFFF;"> ~ </div>
+                  <div class="right-rate"> ~ ${{bnbUSD}} </div>
                 </el-card>
             </el-col>
             <el-col :span="2" class="icon-col">
@@ -104,9 +104,10 @@
             },
             form: {
                 type: "BNB",
-                amount: "0",
+                amount: "",
                 toAmount: "0",
             },
+            bnbUSD: 0,
             rules: {
                 amount: [
                     { required: true, trigger: 'blur',
@@ -196,9 +197,11 @@
           if(this.form.type=="BNB"){
               const toAmount = amount.dividedBy(rate);
               this.form.toAmount = toAmount.toString();
+              this.bnbUSD = amount.times(this.member.bnbQuote).toFixed(2, 1);
           }else{
               const toAmount = amount.multipliedBy(rate);
               this.form.toAmount = toAmount.toString();
+              this.bnbUSD = toAmount.times(this.member.bnbQuote).toFixed(2, 1);
           }
         },
         swapTokens(){

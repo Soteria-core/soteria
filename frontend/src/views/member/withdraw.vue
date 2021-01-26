@@ -37,24 +37,29 @@
 <script>
 import { mapGetters } from 'vuex'
 import { BigNumber } from 'bignumber.js'
+import { watch } from '@/utils/watch.js';
+import SOTETokenContract from '@/services/SOTEToken';
 
 export default {
   name: 'MemberWithdraw',
   components:{},
   data() {
     return {
+      SOTEToken: null,
+      lockedForMV: 0,
     }
   },
   computed: {
     ...mapGetters([
       'web3',
-      'member'
+      'member',
+      'web3Status',
     ]),
     hasCoverAndStake(){
       return BigNumber(this.member.coverDeposit).gt(0) || BigNumber(this.member.assessment).gt(0) || BigNumber(this.member.stakeDeposit).gt(0);
     },
     hasLockedOfGo(){
-      return false;
+      return BigNumber(this.lockedForMV).gt(0);
     },
     hasRewards(){
       return BigNumber(this.member.rewards).gt(0);
@@ -63,10 +68,26 @@ export default {
       return BigNumber(this.member.balance).gt(0);
     }
   },
+  watch: {
+    web3Status: watch.web3Status,
+  },
   created(){
+    this.initData();
   },
   methods: {
+    initData(){
+      if (this.web3Status === this.WEB3_STATUS.AVAILABLE) {
+        this.initContract();
+      }
+    },
     async initContract(){
+      this.SOTEToken = await this.getContract(SOTETokenContract);
+      this.getLockedOfGo();
+    },
+    async getLockedOfGo(){
+      const instance = this.SOTEToken.getContract().instance;
+      const lockedTime = await instance.isLockedForMV(this.member.account);
+      this.lockedForMV = lockedTime.toString();
     },
   }
 }

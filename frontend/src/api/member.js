@@ -96,9 +96,17 @@ export async function getRewards(vue){
   const crInstance = ClaimsReward.getContract().instance;
   const caRewards = await crInstance.getRewardToBeDistributedByUser(member.account);
 
+  let govRewards = 0;
+  try{
+    const Governance = await vue.getContract(GovernanceContract);
+    const govInstance = Governance.getContract().instance;
+    govRewards = await govInstance.getPendingReward(member.account);
+  }catch(e){
+    govRewards = 0;
+  }
   vue.$store.dispatch("member/changeMember", {
     key: "rewards",
-    value: BigNumber(caRewards.toString()).plus(pooledStakingRewards.toString()).toString()
+    value: BigNumber(caRewards.toString()).plus(pooledStakingRewards.toString()).plus(govRewards.toString()).toString()
   });
 }
 

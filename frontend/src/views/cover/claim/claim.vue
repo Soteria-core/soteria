@@ -5,7 +5,7 @@
         <highlight>{{options.remainingClaims}} claims remaining!</highlight>
       </div>
       <div class="tips normal-text">
-        To make the best use of your claim attempts, make sure you fulfill all 
+        To make the best use of your claim attempts, make sure you fulfill all
         necessary conditions before submitting.
         <br/>
         You're covered for the following events:
@@ -14,7 +14,7 @@
             bugs in the solidity code that lead to a material loss of your funds
           </li>
         </ul>
-        Check out full details <el-button type="text">here</el-button>.
+        Check out full details <el-button type="text" @click="howItWorks">here</el-button>.
         <br />
         <highlight>Why is there a submission limit?</highlight>
       </div>
@@ -31,11 +31,10 @@
         <highlight>Claims submission process</highlight>
       </div>
       <div class="tips2 normal-text">
-        When you submit a claim, members have up to 72 hours to vote whether to accept or reject it. 
+        When you submit a claim, members have up to 72 hours to vote whether to accept or reject it.
         If enough voting power (locked SOTE) and a quorum (number of voters) is reached, the outcome stands.
         Otherwise it is escalated to a full member vote.
-        members are free to decide for themselves which way to vote. More details on the process can be found 
-        <el-button type="text">here</el-button>.
+        members are free to decide for themselves which way to vote.
       </div>
     </el-card>
   </div>
@@ -52,7 +51,7 @@ export default {
   props: ["options"],
   data() {
     return {
-     
+
     }
   },
   computed: {
@@ -79,6 +78,10 @@ export default {
     async initContract(){
 
     },
+    howItWorks(){
+      // 查看pdf
+      window.open('pdf/SmartContractCoverWording.pdf');
+    }
   }
 }
 </script>

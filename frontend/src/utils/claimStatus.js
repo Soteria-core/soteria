@@ -70,6 +70,16 @@ export const statusFormat = (data) => {
     };
   }
   if (MV_PENDING_STATUS_LIST.includes(parseInt(data.status))) {
+    if(parseInt(data.status) == 3){
+      const curTime = new Date().getTime();
+      const expireTime = BigNumber(data.dateUpd).plus(data.maxVotingTime).times(1000);
+      if(expireTime.lt(curTime)){
+        return  {
+          status: 'Denied',
+          tagType: 'danger'
+        };
+      }
+    }
     if (BigNumber(data.mvVoteId).gt(0)) {
       return {
         status: 'Already assessed',

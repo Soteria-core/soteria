@@ -42,7 +42,7 @@
 import { Navbar, Sidebar, AppMain } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
 import { mapGetters } from 'vuex'
-import { getSettings } from '@/api/common.js'
+import { getSettings, getBNBQuote } from '@/api/common.js'
 
 export default {
   name: 'Layout',
@@ -130,6 +130,7 @@ export default {
       console.info("settings:", settings);
       this.$store.dispatch("settings/changeSetting", { key: "settings", value: settings });
       this.$store.dispatch('app/setWeb3', { web3: this.$CustomWeb3, settings: settings});
+      getBNBQuote(this);
     },
 
     handleClickOutside() {

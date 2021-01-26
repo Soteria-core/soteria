@@ -21,6 +21,6 @@
 },{
   "availableFunds": "Rewards:",
   "amount":"rewards",
-  "withdrawable": "0",
+  "withdrawable": "rewards",
   "type": "Withdraw"
 }]

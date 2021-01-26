@@ -14,3 +14,5 @@ scp -i ~/Downloads/other-mongo.pem dist.tar.gz centos@18.166.235.68:/home/centos
 
 ssh -i ~/Downloads/other-mongo.pem centos@18.166.235.68 "cd /home/centos; tar -zxvf dist.tar.gz > /dev/null; cp -rf pdf dist/"
 
+exit
+scp -i ~/Downloads/other-mongo.pem centos@18.166.235.68:/data/app/nginx/conf/nginx.conf .

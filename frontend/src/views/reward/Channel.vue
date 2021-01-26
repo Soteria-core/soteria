@@ -28,7 +28,7 @@
             <div class="balance">{{$etherToNumber(rewards[2])}} SOTE</div>
             <div>Earn rewards by voting in governance. </div>
           </div>
-          <el-button type="primary" plain round @click="vote">Vote</el-button>
+          <el-button type="primary" plain round @click="vote" :disabled="!settings.features.Governance">Vote</el-button>
         </el-card>
       </el-col>
     </el-row>
@@ -49,7 +49,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['web3Status', 'member']),
+    ...mapGetters(['web3Status', 'member', 'settings']),
   },
   watch: {
     web3Status: watch.web3Status,
@@ -75,6 +75,7 @@ export default {
           if(this.rewards.filter(item => !item).length == 0){
             this.onload = true;
           }
+          this.$emit("rewardsData", this.rewards);
         }
       }
     },
