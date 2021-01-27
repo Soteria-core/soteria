@@ -1,0 +1,26 @@
+{
+  "0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F": {
+    "name": "PancakeSwap",
+    "type": "contract",
+    "dateAdded": "2021-01-19",
+    "logo": "https://app.soteria.finance/images/pancake.svg",
+    "github": "https://github.com/pancakeswap",
+    "messari": ""
+  },
+  "0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5": {
+    "name": "BakerySwap",
+    "type": "contract",
+    "dateAdded": "2021-01-25",
+    "logo": "https://app.soteria.finance/images/bakery.png",
+    "github": "https://github.com/BakeryProject",
+    "messari": ""
+  },
+  "0x63870A18B6e42b01Ef1Ad8A2302ef50B7132054F": {
+    "name": "Blink",
+    "type": "contract",
+    "dateAdded": "2021-01-27",
+    "logo": "https://app.soteria.finance/images/blink.png",
+    "github": "https://blink.wink.org",
+    "messari": ""
+  }
+}

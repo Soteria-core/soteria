@@ -50,14 +50,14 @@ module.exports = quoteEngine => {
   app.use(async (req, res, next) => {
 
     const origin = req.get('origin');
-    const isAllowed = await isOriginAllowed(origin);
+    // const isAllowed = await isOriginAllowed(origin);
 
-    if (!isAllowed) {
-      return res.status(403).send({
-        error: true,
-        message: 'Origin not allowed. Contact us for an API key',
-      });
-    }
+    // if (!isAllowed) {
+    //   return res.status(403).send({
+    //     error: true,
+    //     message: 'Origin not allowed. Contact us for an API key',
+    //   });
+    // }
     next();
   });
 
@@ -176,9 +176,9 @@ function prettyPrintResponse (r) {
 
 function prettyPrintCapacityResponse (r) {
   const prettyResponse = {
-    capacityETH: r.capacityETH.toFixed(0),
+    capacityBNB: r.capacityETH.toFixed(0),
     capacityDAI: r.capacityDAI.toFixed(0),
-    netStakedNXM: r.netStakedNXM.toFixed(0),
+    netStakedSOTE: r.netStakedNXM.toFixed(0),
     capacityLimit: r.capacityLimit,
   };
   return prettyResponse;

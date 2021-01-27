@@ -11,7 +11,7 @@ async function getWhitelist () {
   let whitelist = cache.get(WHITELIST_KEY);
   if (!whitelist) {
     whitelist = {};
-    const data = await fetch('https://api.nexusmutual.io/coverables/contracts.json').then(res => res.json());
+    const data = await fetch('https://app.soteria.finance/contracts.json').then(res => res.json());
     for (const address of Object.keys(data)) {
       if (!data[address].deprecated) {
         const contractData = data[address];

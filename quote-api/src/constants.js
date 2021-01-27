@@ -29,7 +29,7 @@ const CAPACITY_LIMIT = {
   MCR_CAPACITY: 'MCR_CAPACITY',
 };
 
-const CURRENCIES = ['ETH', 'DAI'];
+const CURRENCIES = ['BNB'];
 
 module.exports = {
   DAI_COVER_DENYLIST,
