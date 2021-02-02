@@ -1,7 +1,7 @@
 pragma solidity 0.5.17;
 
 
-/* Copyright (C) 2017 Soteria.fund
+/* Copyright (C) 2021 Soteria.fund
 
   This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -159,7 +159,7 @@ library SafeMath {
     }
 }
 
-/* Copyright (C) 2017 Soteria.fund
+/* Copyright (C) 2021 Soteria.fund
 
   This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -1607,7 +1607,7 @@ interface IERC20 {
     );
 }
 
-/* Copyright (C) 2017 Soteria.fund
+/* Copyright (C) 2021 Soteria.fund
 
   This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -3158,7 +3158,7 @@ contract TokenController is IERC1132, Iupgradable {
 }
 
 
-/* Copyright (C) 2017 Soteria.fund
+/* Copyright (C) 2021 Soteria.fund
 
   This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -4037,7 +4037,7 @@ contract PoolData is Iupgradable {
     }    
 }
 
-/* Copyright (C) 2017 Soteria.fund
+/* Copyright (C) 2021 Soteria.fund
 
   This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -4542,7 +4542,7 @@ contract QuotationData is Iupgradable {
     }
 }
 
-/* Copyright (C) 2017 Soteria.fund
+/* Copyright (C) 2021 Soteria.fund
 
   This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -5387,7 +5387,7 @@ contract TokenData is Iupgradable {
     }
 }
 
-/* Copyright (C) 2017 Soteria.fund
+/* Copyright (C) 2021 Soteria.fund
 
   This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -5869,7 +5869,7 @@ contract Exchange {
         public returns (uint256);
 }
 
-/* Copyright (C) 2017 Soteria.fund
+/* Copyright (C) 2021 Soteria.fund
 
   This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -6448,7 +6448,7 @@ contract Pool2 is Iupgradable {
     }
 }
 
-/* Copyright (C) 2017 Soteria.fund
+/* Copyright (C) 2021 Soteria.fund
 
   This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -6901,7 +6901,7 @@ contract Pool1 is Iupgradable {
     }
 }
 
-/* Copyright (C) 2017 Soteria.fund
+/* Copyright (C) 2021 Soteria.fund
 
   This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -7261,7 +7261,7 @@ contract MCR is Iupgradable {
 
 }
 
-/* Copyright (C) 2017 Soteria.fund
+/* Copyright (C) 2021 Soteria.fund
 
   This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -7886,6 +7886,26 @@ contract ClaimsReward is Iupgradable {
         if (governanceRewards > 0) {
             require(tk.transfer(msg.sender, governanceRewards));
         }
+    }
+    
+    /**
+     * @dev Function used to claim all pending rewards : Claims Assessment + Risk Assessment
+     * Claim assesment, Risk assesment
+     */
+    function claimPendingReward(uint records) public isMemberAndcheckPause {
+        _claimRewardToBeDistributed(records);
+        pooledStaking.withdrawReward(msg.sender);
+    }
+    
+    /**
+     * @dev Function used to get pending rewards of a particular user address.
+     * @param _add user address.
+     * @return total reward amount of the user
+     */
+    function getPendingRewardOfUser(address _add) public view returns(uint) {
+        uint caReward = getRewardToBeDistributedByUser(_add);
+        uint pooledStakingReward = pooledStaking.stakerReward(_add);
+        return caReward.add(pooledStakingReward);
     }
 
     /**
@@ -8682,6 +8702,108 @@ contract ProposalCategory is  Governed, IProposalCategory, Iupgradable {
     }
 
     /**
+    * @dev Initiates Default settings for Proposal Category contract (Adding default categories)
+    */
+    function proposalCategoryInitiate() external { //solhint-disable-line
+        require(!constructorCheck);
+        constructorCheck = true;
+        _addInitialCategories("Uncategorized", "", "MR", 60, 15, 1, 0);
+
+        // 1 -- 5
+        _addInitialCategories("Add new member role", "QmQFnBep7AyMYU3LJDuHSpTYatnw65XjHzzirrghtZoR8U", "MR", 60, 15, 1, 0);
+        _addInitialCategories("Update member role", "QmXMzSViLBJ22P9oj51Zz7isKTRnXWPHZcQ5hzGvvWD3UV", "MR", 60, 15, 1, 0);
+        _addInitialCategories("Add new category", "QmUq9Rb6rWFHZXjVtyzh7AWGDeyVFtDHKiP5fJpgnuinQ7", "PC", 60, 15, 1, 0);
+        _addInitialCategories("Edit category", "QmQmvfBiCLfe5jPdq69iRBRRdnSHSroJQ4SG8DhtkXcLfQ", "PC", 60, 15, 1, 0);
+        _addInitialCategories("Upgrade a contract Implementation", "Qme4hGas6RuDYk9LKE2XkK9E46LNeCBUzY12DdT5uQstvh", "MS", 50, 15, 2, 80);
+
+        // 6 -- 10
+        _addInitialCategories("Implement Emergency Pause", "QmZSaEsvTCpy357ZSrPYKqby1iaksBwPdKCGWzW1HpgSpe", "MS", 0, 15, 1, 0);
+        _addInitialCategories("Extend or Switch Off Emergency Pause", "Qmao6dD8amq4kxsAheWn5gQX22ABucFFGRvnRuY1VqtEKy", "MS", 50, 15, 2, 0);
+        _addInitialCategories("Burn Claims Assessor Bond", "QmezNJUF2BM5Nv9EMnsEKUmuqjvdySzvQFvhEdvFJbau3k", "TF", 80, 15, 1, 0);
+        _addInitialCategories("Pause Claim Assessor Voting for 3 days", "QmRBXh9NGoGV7U7tTurKPhL4bzvDc9n23QZYidELpBPVdg", "CD", 60, 15, 1, 0);
+        _addInitialCategories("Changes to Capital Model", "", "EX", 50, 15, 2, 60);
+
+        // 11 -- 15
+        _addInitialCategories("Changes to Pricing Model", "", "EX", 50, 15, 2, 60);
+        _addInitialCategories("Withdraw funds to Pay for Support Services", "QmZQhJunZesYuCJkdGwejSATTR8eynUgV8372cHvnAPMaM", "P1", 50, 15, 2, 80);
+        _addInitialCategories("Add Investment Asset", "Qmd66GdYtn1BYmZTB1op1Fbfkq6uywMpow5LRmG2Twbzjb", "PD", 50, 15, 2, 60);
+        _addInitialCategories("Edit Investment Asset min and max holding percentages", "QmXwyffmk7rYGHE7p4g3oroJkmyEYAn6EffhZu2MCNcJGA", "PD", 50, 15, 2, 60);
+        _addInitialCategories("Update Investment Asset Status", "QmZkxcC82WFRvnBahLT3eQ95ZSGMxuAyCYqxvR3tSyhFmB", "PD", 50, 15, 2, 60);
+
+
+        // 16 -- 20
+        _addInitialCategories("Change AB Member", "QmUBjPDdSiG3pRMqkVzZA2WaqiksT7ixNd3gPQwngGmF9x", "MR", 50, 15, 2, 0);
+        _addInitialCategories("Add Currency Asset", "QmYtpNuTdProressqZwEmN7cFtyyJvhFBrqr6xnxQGWrPm", "PD", 50, 15, 2, 0);
+        _addInitialCategories("Any other Item", "", "EX", 50, 15, 2, 80);
+        _addInitialCategories("Special Resolution", "", "EX", 75, 0, 2, 0);
+        _addInitialCategories("Update Token Parameters", "QmbfJTXyLTDsq41U4dukHbagcXef8bRfyMdMqcqLd9aKNM", "TD", 50, 15, 2, 60);
+
+        // 21 -- 25
+        _addInitialCategories("Update Risk Assessment Parameters", "QmUHvBShLpDwPWAsWcZvbUJfVGyXYscybi5ASmF6ectxSo", "TD", 50, 15, 2, 60);
+        _addInitialCategories("Update Governance Parameters", "QmdFDVEaZnJxXncFczTW6EvrcgR3jBfuPWftR7PfkPfqqT", "GV", 50, 15, 2, 60);
+        _addInitialCategories("Update Quotation Parameters", "QmTtSbBp2Cxaz8HzB4TingUozr9AW91siCfMjjyzf8qqAb", "QD", 50, 15, 2, 60);
+        _addInitialCategories("Update Claims Assessment Parameters", "QmPo6HPydwXEeoVdwBpwGeZasFnmFwZoTsQ93Bg5pFtQg6", "CD", 50, 15, 2, 60);
+        _addInitialCategories("Update Investment Module Parameters", "QmYSUJBJD9hUevydfdF34rGFG7bBQhMrxh2ga9XfeAkdEM", "PD", 50, 15, 2, 60);
+
+        // 26 -- 30
+        _addInitialCategories("Update Capital Model Parameters", "QmaQH6AdvBdgrW4xdzcMHa7gNyYSGa2fz7gBuuic2hLkZQ", "PD", 50, 15, 2, 60);
+        _addInitialCategories("Update Address Parameters", "QmPfXySkeDFbdMvZyD35y1hiB4g6ZXLSEHfS7JjS6e1VKL", "MS", 50, 15, 2, 60);
+        _addInitialCategories("Update Owner Parameters", "QmTEmDA1ECmGPfh5x3co1GmjXQCp3zisUP6rnLQjWmW8nu", "MS", 50, 15, 3, 0);
+        _addInitialCategories("Release new smart contract code", "QmSStfVwXF1TzDPCseVtMydgdF1xmzqhMtfpUg9Btx7tUp", "MS", 50, 15, 2, 80);
+        _addInitialCategories("Edit Currency Asset Address", "QmahwCzxmUX1QEjgczmA2NF4Nxtx839eRLCXbBFeFCm3cF", "PD", 50, 15, 3, 60);
+
+        // 31 -- 35
+        _addInitialCategories("Edit Currency Asset baseMin", "QmeFSwZ21d7XabxVc7eiNKbtfEXUuD8qQXkeHZ5To1vo4t", "PD", 50, 15, 2, 60);
+        _addInitialCategories("Edit Investment Asset Address and decimal", "QmRpztKqva2ud5xz9CQeb562bRQt2VEBPnjaWEPwN8q3vf", "PD", 50, 15, 3, 60);
+        _addInitialCategories("Trading Trigger Check", "QmSStfVwXF1TzDPCseVtMydgdF1xmzqhMtfpUg9Btx7tUp", "P2", 50, 15, 2, 80);
+        _addInitialCategories("Add new contract", "QmSStfVwXF1TzDPCseVtMydgdF1xmzqhMtfpUg9Btx7tUp", "MS", 50, 15, 2, 80);
+        _addInitialCategories("Token Controller Parameters", "QmTtSbBp2Cxaz8HzB4TingUozr9AW91siCfMjjyzf8qqAb", "TC", 50, 15, 2, 60);
+
+        // 36
+        _addInitialCategories("Update MCR Parameters", "QmTtSbBp2Cxaz8HzB4TingUozr9AW91siCfMjjyzf8qqAb", "MC", 50, 15, 2, 60);
+    }
+
+    function _addInitialCategories(
+        string memory _name,
+        string memory _actionHash,
+        bytes2 _contractName,
+        uint _majorityVotePerc, 
+        uint _quorumPerc,
+        uint _memberRoleToVote,
+        uint _categoryABReq
+    ) 
+        internal 
+    {
+        uint[] memory allowedToCreateProposal = new uint[](1);
+        uint[] memory stakeIncentive = new uint[](4);
+        if (_memberRoleToVote == 3) {
+            allowedToCreateProposal[0] = 3;
+        } else {
+            allowedToCreateProposal[0] = 2;
+        }
+        stakeIncentive[0] = 0;
+        stakeIncentive[1] = 0;
+        stakeIncentive[2] = _categoryABReq;
+        if (_quorumPerc == 0) {//For special resolutions
+            stakeIncentive[3] = 1;
+        } else {
+            stakeIncentive[3] = 0;
+        }
+        _addCategory(
+                _name,
+                _memberRoleToVote,
+                _majorityVotePerc,
+                _quorumPerc,
+                allowedToCreateProposal,
+                604800,
+                _actionHash,
+                address(0),
+                _contractName,
+                stakeIncentive
+            );
+    }
+
+    /**
     * @dev Initiates Default action function hashes for existing categories
     * To be called after the contract has been upgraded by governance
     */
@@ -8718,6 +8840,9 @@ contract ProposalCategory is  Governed, IProposalCategory, Iupgradable {
         categoryActionHashes[31] = abi.encodeWithSignature("changeCurrencyAssetBaseMin(bytes4,uint256)");
         categoryActionHashes[32] = abi.encodeWithSignature("changeInvestmentAssetAddressAndDecimal(bytes4,address,uint8)");//solhint-disable-line
         categoryActionHashes[33] = abi.encodeWithSignature("externalLiquidityTrade()");
+        categoryActionHashes[34] = abi.encodeWithSignature("addNewInternalContract(bytes2,address,uint256)");
+        categoryActionHashes[35] = abi.encodeWithSignature("updateUintParameters(bytes8,uint256)");
+        categoryActionHashes[36] = abi.encodeWithSignature("updateUintParameters(bytes8,uint256)");
     }
 
     /**
@@ -9100,100 +9225,6 @@ contract IGovernance {
     event ActionSuccess (
         uint256 proposalId
     );
-
-    /// @dev Creates a new proposal
-    /// @param _proposalDescHash Proposal description hash through IPFS having Short and long description of proposal
-    /// @param _categoryId This id tells under which the proposal is categorized i.e. Proposal's Objective
-    function createProposal(
-        string calldata _proposalTitle,
-        string calldata _proposalSD,
-        string calldata _proposalDescHash,
-        uint _categoryId
-    ) 
-        external;
-
-    /// @dev Edits the details of an existing proposal and creates new version
-    /// @param _proposalId Proposal id that details needs to be updated
-    /// @param _proposalDescHash Proposal description hash having long and short description of proposal.
-    function updateProposal(
-        uint _proposalId, 
-        string calldata _proposalTitle, 
-        string calldata _proposalSD, 
-        string calldata _proposalDescHash
-    ) 
-        external;
-
-    /// @dev Categorizes proposal to proceed further. Categories shows the proposal objective.
-    function categorizeProposal(
-        uint _proposalId, 
-        uint _categoryId,
-        uint _incentives
-    ) 
-        external;
-
-    /// @dev Initiates add solution 
-    /// @param _solutionHash Solution hash having required data against adding solution
-    function addSolution(
-        uint _proposalId,
-        string calldata _solutionHash, 
-        bytes calldata _action
-    ) 
-        external; 
-
-    /// @dev Opens proposal for voting
-    function openProposalForVoting(uint _proposalId) external;
-
-    /// @dev Submit proposal with solution
-    /// @param _proposalId Proposal id
-    /// @param _solutionHash Solution hash contains  parameters, values and description needed according to proposal
-    function submitProposalWithSolution(
-        uint _proposalId, 
-        string calldata _solutionHash, 
-        bytes calldata _action
-    ) 
-        external;
-
-    /// @dev Creates a new proposal with solution and votes for the solution
-    /// @param _proposalDescHash Proposal description hash through IPFS having Short and long description of proposal
-    /// @param _categoryId This id tells under which the proposal is categorized i.e. Proposal's Objective
-    /// @param _solutionHash Solution hash contains  parameters, values and description needed according to proposal
-    function createProposalwithSolution(
-        string calldata _proposalTitle, 
-        string calldata _proposalSD, 
-        string calldata _proposalDescHash,
-        uint _categoryId, 
-        string calldata _solutionHash, 
-        bytes calldata _action
-    ) 
-        external;
-
-    /// @dev Casts vote
-    /// @param _proposalId Proposal id
-    /// @param _solutionChosen solution chosen while voting. _solutionChosen[0] is the chosen solution
-    function submitVote(uint _proposalId, uint _solutionChosen) external;
-
-    function closeProposal(uint _proposalId) external;
-
-    function claimReward(address _memberAddress, uint _maxRecords) external returns(uint pendingDAppReward); 
-
-    function proposal(uint _proposalId)
-        external
-        view
-        returns(
-            uint proposalId,
-            uint category,
-            uint status,
-            uint finalVerdict,
-            uint totalReward
-        );
-
-    function canCloseProposal(uint _proposalId) public view returns(uint closeValue);
-
-    function pauseProposal(uint _proposalId) public;
-    
-    function resumeProposal(uint _proposalId) public;
-    
-    function allowedToCatgorize() public view returns(uint roleId);
 
 }
 
@@ -9908,7 +9939,10 @@ contract Governance is IGovernance, Iupgradable {
         uint category;
         uint commonIncentive;
         uint dateUpd;
+        uint dateCreated;
         address owner;
+        string title;
+        string desc;
     }
 
     struct ProposalVote {
@@ -9929,41 +9963,42 @@ contract Governance is IGovernance, Iupgradable {
         uint lastUpd;
     }
 
-    ProposalVote[] internal allVotes;
+    ProposalVote[] public allVotes;
     DelegateVote[] public allDelegation;
 
-    mapping(uint => ProposalData) internal allProposalData;
-    mapping(uint => bytes[]) internal allProposalSolutions;
-    mapping(address => uint[]) internal allVotesByMember;
+    mapping(uint => ProposalData) public allProposalData;
+    mapping(uint => bytes[]) public allProposalSolutions;
+    mapping(address => uint[]) public allVotesByMember;
     mapping(uint => mapping(address => bool)) public rewardClaimed;
     mapping (address => mapping(uint => uint)) public memberProposalVote;
     mapping (address => uint) public followerDelegation;
-    mapping (address => uint) internal followerCount;
-    mapping (address => uint[]) internal leaderDelegation;
+    mapping (address => uint) public followerCount;
+    mapping (address => uint[]) public leaderDelegation;
     mapping (uint => VoteTally) public proposalVoteTally;
     mapping (address => bool) public isOpenForDelegation;
     mapping (address => uint) public lastRewardClaimed;
 
     bool public constructorCheck;
     uint public tokenHoldingTime;
-    uint internal roleIdAllowedToCatgorize;
-    uint internal maxVoteWeigthPer;
-    uint internal specialResolutionMajPerc;
-    uint internal maxFollowers;
-    uint internal totalProposals;
-    uint internal maxDraftTime;
+    uint public roleIdAllowedToCatgorize;
+    uint public maxVoteWeigthPer;
+    uint public specialResolutionMajPerc;
+    uint public maxFollowers;
+    uint public totalProposals;
+    uint public maxDraftTime;
+    uint public actionWaitingTime;
 
     MemberRoles internal memberRole;
     ProposalCategory internal proposalCategory;
     TokenController internal tokenInstance;
 
     mapping(uint => uint) public proposalActionStatus;
-    mapping(uint => uint) internal proposalExecutionTime;
+    mapping(uint => uint) public proposalExecutionTime;
     mapping(uint => mapping(address => bool)) public proposalRejectedByAB;
-    mapping(uint => uint) internal actionRejectedCount;
+    mapping(uint => uint) public actionRejectedCount;
 
-    bool internal actionParamsInitialised;
-    uint internal actionWaitingTime;
+    // bool internal actionParamsInitialised;
+    
     uint constant internal AB_MAJ_TO_REJECT_ACTION = 3;
 
     enum ActionStatus {
@@ -10037,6 +10072,20 @@ contract Governance is IGovernance, Iupgradable {
         address indexed categorizedBy,
         uint categoryId
     );
+
+    function initGovernance() public {
+        require(constructorCheck == false, "already init!");
+
+        totalProposals = 1;
+        tokenHoldingTime = 1 * 7 days;
+        maxDraftTime = 2 * 7 days;
+        maxVoteWeigthPer = 5;
+        maxFollowers = 40;
+        constructorCheck = true;
+        roleIdAllowedToCatgorize = uint(MemberRoles.Role.AdvisoryBoard);
+        specialResolutionMajPerc = 75;
+        actionWaitingTime = 24 * 1 hours;
+    }
     
     /**
      * @dev Removes delegation of an address.
@@ -10045,6 +10094,7 @@ contract Governance is IGovernance, Iupgradable {
     function removeDelegation(address _add) external onlyInternal {
         _unDelegate(_add);
     }
+
 
     /**
     * @dev Creates a new proposal
@@ -10065,36 +10115,6 @@ contract Governance is IGovernance, Iupgradable {
     }
 
     /**
-    * @dev Edits the details of an existing proposal
-    * @param _proposalId Proposal id that details needs to be updated
-    * @param _proposalDescHash Proposal description hash having long and short description of proposal.
-    */
-    function updateProposal(
-        uint _proposalId, 
-        string calldata _proposalTitle, 
-        string calldata _proposalSD, 
-        string calldata _proposalDescHash
-    ) 
-        external onlyProposalOwner(_proposalId)
-    {
-        require(
-            allProposalSolutions[_proposalId].length < 2,
-            "Not allowed"
-        );
-        allProposalData[_proposalId].propStatus = uint(ProposalStatus.Draft);
-        allProposalData[_proposalId].category = 0;
-        allProposalData[_proposalId].commonIncentive = 0;
-        emit Proposal(
-            allProposalData[_proposalId].owner,
-            _proposalId,
-            now,
-            _proposalTitle, 
-            _proposalSD, 
-            _proposalDescHash
-        );
-    }
-
-    /**
     * @dev Categorizes proposal to proceed further. Categories shows the proposal objective.
     */
     function categorizeProposal(
@@ -10106,20 +10126,6 @@ contract Governance is IGovernance, Iupgradable {
         voteNotStarted(_proposalId) isAllowedToCategorize
     {
         _categorizeProposal(_proposalId, _categoryId, _incentive);
-    }
-
-    /**
-    * @dev Initiates add solution
-    * To implement the governance interface
-    */
-    function addSolution(uint, string calldata, bytes calldata) external {
-    }
-
-    /**
-    * @dev Opens proposal for voting
-    * To implement the governance interface
-    */
-    function openProposalForVoting(uint) external {
     }
 
     /**
@@ -10230,8 +10236,9 @@ contract Governance is IGovernance, Iupgradable {
         require(msg.sender == ms.getLatestAddress("CR"));
 
         uint delegationId = followerDelegation[_memberAddress];
-        DelegateVote memory delegationData = allDelegation[delegationId];
-        if (delegationId > 0 && delegationData.leader != address(0)) {
+        
+        if (delegationId > 0) {
+            DelegateVote memory delegationData = allDelegation[delegationId];
             leader = delegationData.leader;
             lastUpd = delegationData.lastUpd;
         } else
@@ -10325,13 +10332,6 @@ contract Governance is IGovernance, Iupgradable {
     }
 
     /**
-     * @dev Undelegates the sender
-     */
-    function unDelegate() external isMemberAndcheckPause checkPendingRewards {
-        _unDelegate(msg.sender);
-    }
-
-    /**
      * @dev Triggers action of accepted proposal after waiting time is finished
      */
     function triggerAction(uint _proposalId) external {
@@ -10363,78 +10363,6 @@ contract Governance is IGovernance, Iupgradable {
     }
 
     /**
-     * @dev Sets intial actionWaitingTime value
-     * To be called after governance implementation has been updated
-     */
-    function setInitialActionParameters() external onlyOwner {
-        require(!actionParamsInitialised);
-        actionParamsInitialised = true;
-        actionWaitingTime = 24 * 1 hours;
-    }
-
-    /**
-     * @dev Gets Uint Parameters of a code
-     * @param code whose details we want
-     * @return string value of the code
-     * @return associated amount (time or perc or value) to the code
-     */
-    function getUintParameters(bytes8 code) external view returns(bytes8 codeVal, uint val) {
-
-        codeVal = code;
-
-        if (code == "GOVHOLD") {
-
-            val = tokenHoldingTime / (1 days);
-
-        } else if (code == "MAXFOL") {
-
-            val = maxFollowers;
-
-        } else if (code == "MAXDRFT") {
-
-            val = maxDraftTime / (1 days);
-
-        } else if (code == "EPTIME") {
-
-            val = ms.pauseTime() / (1 days);
-
-        } else if (code == "ACWT") {
-
-            val = actionWaitingTime / (1 hours);
-
-        }
-    }
-
-    /**
-     * @dev Gets all details of a propsal
-     * @param _proposalId whose details we want
-     * @return proposalId
-     * @return category
-     * @return status
-     * @return finalVerdict
-     * @return totalReward
-     */
-    function proposal(uint _proposalId)
-        external
-        view
-        returns(
-            uint proposalId,
-            uint category,
-            uint status,
-            uint finalVerdict,
-            uint totalRewar
-        )
-    {
-        return(
-            _proposalId,
-            allProposalData[_proposalId].category,
-            allProposalData[_proposalId].propStatus,
-            allProposalData[_proposalId].finalVerdict,
-            allProposalData[_proposalId].commonIncentive
-        );
-    }
-
-    /**
      * @dev Gets some details of a propsal
      * @param _proposalId whose details we want
      * @return proposalId
@@ -10461,22 +10389,6 @@ contract Governance is IGovernance, Iupgradable {
             allProposalSolutions[_proposalId][_solution]
         );
     }
-   
-    /**
-     * @dev Gets length of propsal
-     * @return length of propsal
-     */
-    function getProposalLength() external view returns(uint) {
-        return totalProposals;
-    }
-
-    /**
-     * @dev Get followers of an address
-     * @return get followers of an address
-     */
-    function getFollowers(address _add) external view returns(uint[] memory) {
-        return leaderDelegation[_add];
-    }
 
     /**
      * @dev Gets pending rewards of a member
@@ -10489,9 +10401,9 @@ contract Governance is IGovernance, Iupgradable {
         uint delegationId = followerDelegation[_memberAddress];
         address leader;
         uint lastUpd;
-        DelegateVote memory delegationData = allDelegation[delegationId];
 
-        if (delegationId > 0 && delegationData.leader != address(0)) {
+        if (delegationId > 0) {
+            DelegateVote memory delegationData = allDelegation[delegationId];
             leader = delegationData.leader;
             lastUpd = delegationData.lastUpd;
         } else
@@ -10587,19 +10499,6 @@ contract Governance is IGovernance, Iupgradable {
         }
     }
 
-    /**
-    * @dev Pauses a proposal
-    * To implement govblocks interface
-    */
-    function pauseProposal(uint) public {
-    }
-
-    /**
-    * @dev Resumes a proposal
-    * To implement govblocks interface
-    */
-    function resumeProposal(uint) public {
-    }
 
     /**
     * @dev Checks If the proposal voting time is up and it's ready to close 
@@ -10642,13 +10541,6 @@ contract Governance is IGovernance, Iupgradable {
         }
     }
 
-    /**
-     * @dev Gets Id of member role allowed to categorize the proposal
-     * @return roleId allowed to categorize the proposal
-     */
-    function allowedToCatgorize() public view returns(uint roleId) {
-        return roleIdAllowedToCatgorize;
-    }
 
     /**
      * @dev Gets vote tally data
@@ -10678,10 +10570,15 @@ contract Governance is IGovernance, Iupgradable {
     )
         internal
     {
+        require(bytes(_proposalTitle).length <= 64, "Maximum length of title is 64.");
+        require(bytes(_proposalSD).length <= 1024, "Maximum length of description is 1024.");
         require(proposalCategory.categoryABReq(_categoryId) == 0 || _categoryId == 0);
         uint _proposalId = totalProposals;
         allProposalData[_proposalId].owner = msg.sender;
         allProposalData[_proposalId].dateUpd = now;
+        allProposalData[_proposalId].dateCreated = now;
+        allProposalData[_proposalId].title = _proposalTitle;
+        allProposalData[_proposalId].desc = _proposalSD;
         allProposalSolutions[_proposalId].push("");
         totalProposals++;
 
@@ -10715,6 +10612,7 @@ contract Governance is IGovernance, Iupgradable {
             _categoryId > 0 && _categoryId < proposalCategory.totalCategories(),
             "Invalid category"
         );
+        require(_proposalId < totalProposals, "Invalid proposal Id!");
         allProposalData[_proposalId].category = _categoryId;
         allProposalData[_proposalId].commonIncentive = _incentive;
         allProposalData[_proposalId].propStatus = uint(ProposalStatus.AwaitingSolution);
