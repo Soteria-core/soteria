@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import styles from '@/styles/element-variables.scss';
 import MemberRolesContract from '@/services/MemberRoles';
 import Register from '@/views/member/Register'
 import Member from '@/views/member/Member'
@@ -19,14 +18,14 @@ export default {
 
     return {
       loading : true,
-
       MemberRoles: null,
     }
   },
   computed: {
     ...mapGetters([
       'web3',
-      'member'
+      'member',
+      'web3Status'
     ]),
   },
   created(){

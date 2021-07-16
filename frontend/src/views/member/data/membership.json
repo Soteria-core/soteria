@@ -8,7 +8,7 @@
     "content":"Soteria is a blockchain-based organisation with a legal structure that makes sure the members are not personally liable for the mutual as a whole. To obtain these benefits you need to join the mutual by signing this agreement and paying the membership fee."
   },{
     "title":"Membership costs ${memberFee} BNB",
-    "content":"A small membership fee is the mutual requirement."
+    "content":"A small membership fee is the mutual requirement, When the membership is withdrawn, the membership fee of ${memberFee} BNB is non-refundable."
   },{
     "title":"AML",
     "content":"To become a member, you will need to verify your identity by following the Anti-Money-Laundering process."
