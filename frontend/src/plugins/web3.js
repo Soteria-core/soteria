@@ -1,12 +1,13 @@
 import Web3 from 'web3'
 import store from '@/store'
-import { WEB3_STATUS } from '@/utils/Constants.js'
-import { initMember, getAllowance, getBalance, getWBalance } from '@/api/common.js'
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import {WEB3_STATUS, WALLET_TYPE} from '@/utils/Constants.js'
+import {initMember, getBalance, getWBalance} from '@/api/common.js'
 import Bus from '@/utils/eventBus.js'
-import { BigNumber } from 'bignumber.js'
+import {BigNumber} from 'bignumber.js'
 
 export default {
-  install : function (Vue, options){
+  install: function (Vue, options) {
     Vue.prototype.WEB3_STATUS = WEB3_STATUS;
     Vue.prototype.$EventNames = Bus.$EventNames;
     Vue.prototype.$Bus = Bus;
@@ -14,123 +15,184 @@ export default {
     Vue.prototype.$settings = null;
 
     var CustomWeb3 = {
-        Bus: Bus,
-        web3: null,
-        web3Provider: null,
-        account: null, //当前用户账户地址
-        initWeb3: async function(settings){
-          Vue.prototype.$settings = settings;
-          // Modern dapp browsers...
-          if (window.ethereum) {
-            this.web3Provider = window.ethereum;
-            try {
-              console.info("Request account access");
-              // Request account access
-              await window.ethereum.enable();
-            } catch (error) {
-              // User denied account access...
-              console.error("User denied account access")
-              if(error.code == -32002){
-                this.Bus.$message.error(error.message);
-                return this;
-              }
-              this.Bus.$message.error("User denied account access");
-            }
-          }
-          // Legacy dapp browsers...
-          else if (this.web3) {
-            this.web3Provider = this.web3.currentProvider;
-          }
-          // If no injected web3 instance is detected, fall back to Ganache
-          else {
-            this.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
-          }
-          this.web3 = new Web3(this.web3Provider);
-          if(window.ethereum){
-            this.account = window.ethereum.selectedAddress;
-            const defaultNetwork = settings.networkVersion;
-            const currentNetwork = this.web3Provider.networkVersion;
-            store.dispatch('settings/changeSetting', {key: "currentVersion", value: currentNetwork});
-            if(defaultNetwork == currentNetwork){
-              // 网络一致时才初始化合约相关的数据
-              console.info("Network is current, initializing global events.");
-              this.initEvent();
-              this.initVueEvent();
-              store.dispatch('app/setWeb3Status', WEB3_STATUS.AVAILABLE);
-            }else{
-              store.dispatch('app/setWeb3Status', WEB3_STATUS.UNAVAILABLE);
-            }
-          }else{
-            store.dispatch('app/setWeb3Status', WEB3_STATUS.UNAVAILABLE);
-          }
-          store.dispatch('member/setAccount', this.account);
-          store.dispatch('app/loadingComplete');
-          return this;
-        },
+      Bus: Bus,
+      web3: null,
+      web3Provider: null,
+      account: null, //当前用户账户地址
+      eventListened: false,
+      wEventListened: false,
+      initWeb3: async function (settings, type) {
+        Vue.prototype.$settings = settings;
+        if (type === WALLET_TYPE.WALLET_CONNECT) {
+          return await this.walletConnect(settings)
+        }
+        // console.log('window.ethereum:: ', window.ethereum);
+        if (!window.ethereum) {
+          this.Bus.$message.error('No provider was found, Please check if the wallet exists!')
+          return this
+        }
 
-        initEvent(){
-          this.web3Provider.on("accountsChanged", (accounts)=>{
-            if(accounts && accounts.length>0){
-              this.Bus.$message.warning("Account changed");
-              this.account = accounts[0];
-            }else{
-              this.Bus.$message("Account disconnect ");
-              this.account = null;
-            }
-            store.dispatch("member/setAccount", this.account);
-            // 触发一组事件
-            this.Bus.$emitGroup(this.Bus.$EventNames.switchAccount, this.account);
+        this.web3Provider = window.ethereum;
+        const { networkVersion, chainId } = this.web3Provider
+        let currentVersion = networkVersion || chainId;
+        if (!this.checkNetwork(currentVersion)) {
+          return this
+        }
+
+        // 拥有 Metamask 特性的钱包获取用户地址
+        if (window.ethereum.isMetaMask || window.ethereum.isImToken) {
+          try {
+            await this.web3Provider.request({method: 'eth_requestAccounts'})
+          } catch (error) {
+            this.Bus.$message.error(error.message);
+            return this;
+          }
+        }
+
+        this.account = this.web3Provider.selectedAddress || this.web3Provider.address;
+        this.web3 = new Web3(this.web3Provider);
+        if (!this.eventListened) {
+          this.eventListened = true
+          this.initEvent();
+          this.initVueEvent();
+        }
+        store.dispatch('settings/changeSetting', {key: "currentVersion", value: currentVersion});
+        store.dispatch('app/setWeb3Status', WEB3_STATUS.AVAILABLE);
+        store.dispatch('member/setAccount', this.account);
+        return this;
+      },
+      walletConnect: async function () {
+        // console.log('connect walletConnect...');
+        const {networkVersion, rpcUrl} = Vue.prototype.$settings;
+        this.web3Provider = new WalletConnectProvider({
+          rpc: {
+            [networkVersion]: rpcUrl
+          }
+        });
+        this.web3Provider.chainId = networkVersion
+        let accounts = []
+        try {
+          accounts = await this.web3Provider.enable();
+        } catch (error) {
+          this.Bus.$message.error(error.message);
+          return this
+        }
+        this.account = accounts[0];
+        this.web3 = new Web3(this.web3Provider);
+        if (!this.wEventListened) {
+          this.wEventListened = true
+          this.initWEvent();
+          this.initVueEvent();
+        }
+        store.dispatch('settings/changeSetting', {key: "currentVersion", value: networkVersion});
+        store.dispatch('app/setWeb3Status', WEB3_STATUS.AVAILABLE);
+        store.dispatch('member/setAccount', this.account);
+        return this;
+      },
+      initWEvent() {
+        this.web3Provider.on("accountsChanged", (accounts) => {
+          console.info('accountsChanged event...');
+          this.handleAccountChange(accounts)
+        });
+        this.web3Provider.on("chainChanged", (chainId) => {
+          console.info('chainChanged event...', chainId);
+        });
+        this.web3Provider.on("disconnect", () => {
+          if (this.account) {
+            store.dispatch('app/disconnect', {web3: this});
+          }
+        });
+      },
+      initEvent() {
+        // 切换账户时
+        this.web3Provider.on("accountsChanged", (accounts) => {
+          console.info('accountsChanged event...');
+          this.handleAccountChange(accounts)
+        });
+        // 切换网络时
+        this.web3Provider.on("networkChanged", (chainId) => {
+          console.info('networkChanged event...', chainId);
+        });
+      },
+      initVueEvent() {
+        this.Bus.$on(this.Bus.$EventNames.initMember, (vue) => {
+          store.dispatch("member/setLoading", true);
+          initMember(vue);
+        });
+        this.Bus.$on(this.Bus.$EventNames.refreshBalance, (vue) => {
+          if (!this.account) {
+            store.dispatch("member/setBalance", 0);
+            store.dispatch("member/setWBalance", 0);
+            store.dispatch("member/setAccountBalance", 0);
+            return
+          }
+          getBalance(vue);
+          getWBalance(vue);
+          this.web3.eth.getBalance(this.account).then((response) => {
+            // console.info("Account Balance: ", response.toString());
+            store.dispatch("member/setAccountBalance", response.toString());
           });
-          this.web3Provider.on("networkChanged", ()=>{
-            console.info(this.web3Provider.networkVersion);
-          });
-        },
-        initVueEvent(){
-          this.Bus.$on(this.Bus.$EventNames.initMember, (vue)=>{
-            store.dispatch("member/setLoading", true);
-            initMember(vue);
-          });
-          this.Bus.$on(this.Bus.$EventNames.refreshBalance, (vue)=>{
-            getBalance(vue);
-            getWBalance(vue);
-            this.web3.eth.getBalance(this.account).then((response)=>{
-                console.info("Account Balance: ", response.toString());
-                store.dispatch("member/setAccountBalance", response.toString());
-            });
-          });
-        },
+        });
+      },
+      handleAccountChange(accounts) {
+        if (accounts && accounts.length > 0) {
+          console.info("Account changed");
+          this.account = accounts[0];
+        } else {
+          console.info("Account disconnect");
+          this.account = null;
+        }
+        store.dispatch("member/setAccount", this.account);
+        this.Bus.$emitGroup(this.Bus.$EventNames.switchAccount, this.account); // 触发一组事件
+      },
+      checkNetwork(chainId) {
+        const networkVersion = Vue.prototype.$settings.networkVersion
+        return chainId == networkVersion
+      },
+      disconnect: async function () {
+        console.log('disconnect...');
+        if (typeof this.web3Provider.disconnect == 'function') {
+          await this.web3Provider.disconnect()
+        }
+        this.handleAccountChange(null)
+        return this
+      }
     };
-
-    var getContract = async function(ContractClass){
+    var getContract = async function (ContractClass) {
       const contractsMap = this.$store.getters.contracts;
       let contractObj = contractsMap[ContractClass.key];
-      console.info(ContractClass.key, contractsMap);
-      if(!contractObj){
+      // console.info(ContractClass.key, contractsMap);
+      if (!contractObj) {
         contractObj = new ContractClass(this);
         await contractObj.initContract();
       }
       this.$store.dispatch('contract/put', contractObj);
       return contractObj;
     }
+
     function ether(n) {
+      if (!n) {
+        return n
+      }
       let utils = this.$CustomWeb3.web3.utils;
       const bn = new utils.BN(utils.toWei(n, 'ether'));
       return bn.toString();
     }
+
     // 默认保留小数点后两位
     function etherToNumber(n) {
-      if(n!=null && this.$CustomWeb3 && this.$CustomWeb3.web3){
-          let utils = this.$CustomWeb3.web3.utils;
-          return BigNumber(utils.fromWei(n.toString(), 'ether').toString()).toFixed(2, 1);
+      if (n != null && this.$CustomWeb3 && this.$CustomWeb3.web3) {
+        let utils = this.$CustomWeb3.web3.utils;
+        return BigNumber(utils.fromWei(n.toString(), 'ether').toString()).toFixed(2, 1);
       }
       return n;
     }
 
     // 全部返回
     function etherToValue(n) {
-      if(n!=null && this.$CustomWeb3 && this.$CustomWeb3.web3){
-          let utils = this.$CustomWeb3.web3.utils;
-          return utils.fromWei(n.toString(), 'ether').toString();
+      if (n != null && this.$CustomWeb3 && this.$CustomWeb3.web3) {
+        let utils = this.$CustomWeb3.web3.utils;
+        return utils.fromWei(n.toString(), 'ether').toString();
       }
       return n;
     }
@@ -140,5 +202,8 @@ export default {
     Vue.prototype.$ether = ether;
     Vue.prototype.$etherToNumber = etherToNumber;
     Vue.prototype.$etherToValue = etherToValue;
+    Vue.prototype.toJSON = function () {
+      return this
+    };
   }
 }
