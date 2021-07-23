@@ -14,7 +14,7 @@
   "withdrawable": "withdrawAssessment",
   "type": "Withdraw"
 },{
-  "availableFunds":"Pooled staking:",
+  "availableFunds":"Stake deposits:",
   "amount":"stakeDeposit",
   "withdrawable": "withdrawStakeDeposit",
   "type": "Withdraw"

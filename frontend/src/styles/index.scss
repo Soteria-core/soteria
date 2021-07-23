@@ -2,6 +2,7 @@
 @import './variables.scss';
 @import './mixin.scss';
 @import './transition.scss';
+@import './flex.scss';
 @import './element-ui.scss';
 @import './sidebar.scss';
 
@@ -75,6 +76,7 @@ div:focus {
   color: #303133;
 }
 .normal-text{
+  line-height: 24px;
   color: #606266;
 }
 .normal-text-bold{
@@ -83,6 +85,21 @@ div:focus {
 }
 .secondary-text{
   color: #909399;
+}
+.lh24 {
+  line-height: 24px;
+}
+.mb8 {
+  margin-bottom: 8px;
+}
+.mb16 {
+  margin-bottom: 16px;
+}
+.mb20 {
+  margin-bottom: 20px;
+}
+.mt20 {
+  margin-top: 20px;
 }
 
 .li-title {
@@ -106,11 +123,11 @@ div:focus {
   font-size: 22px;
   color: $--color-primary;
 }
-.right-area {
-  position: absolute;
-  right: 0px;
-  top: 40px;
-}
+//.right-area {
+//  position: absolute;
+//  right: 0px;
+//  top: 40px;
+//}
 .router-link-active{
   li {
     color: $--color-primary !important;
@@ -143,4 +160,21 @@ div:focus {
   background-color: #FEABA9;
   color: #FFFFFF !important;
   line-height: 20px;
+}
+
+.toggle-btn {
+  display: flex;
+  align-items: center;
+  float: right;
+  font-size: 14px;
+  width: 96px;
+  &.expand {
+    .el-icon-arrow-down {
+      transform: rotate(180deg);
+    }
+  }
+  .el-icon-arrow-down {
+    padding: 0 8px;
+    transition: all 0.2s;
+  }
 }

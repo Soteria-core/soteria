@@ -1,15 +1,15 @@
 <template>
   <div class="li-degrees-badge">
     <div class="li-badge" :style="{
-        'color': fontColor, 
-        'background-color': bgFromColor, 
+        'color': fontColor,
+        'background-color': bgFromColor,
         'background-image': '-webkit-gradient(linear, left top, left bottom, from('+bgFromColor+')), to('+bgToColor+'))',
         'background-image': '-webkit-linear-gradient(top, '+bgFromColor+', '+bgToColor+')',
         'background-image': '-moz-linear-gradient(top, '+bgFromColor+', '+bgToColor+')',
         'background-image': '-ms-linear-gradient(top, '+bgFromColor+', '+bgToColor+')',
         'background-image': '-o-linear-gradient(top, '+bgFromColor+', '+bgToColor+')'
         }">
-      <slot></slot>  
+      <slot></slot>
     </div>
   </div>
 </template>
@@ -43,7 +43,7 @@ export default {
   overflow: hidden;
   position: absolute;
   width: 200px;
-  height: 200px;
+  height: 100px;
   top: -3px;
   right: -3px;
   .li-badge {
