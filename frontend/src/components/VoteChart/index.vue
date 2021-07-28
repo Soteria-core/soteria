@@ -38,9 +38,15 @@ export default {
       return BigNumber(this.left).plus(this.center).plus(this.right).toString();
     },
     cLeft(){
+      if (BigNumber(this.sum).comparedTo(0) === 0) {
+        return 0
+      }
       return BigNumber(this.left).div(this.sum).times(100).toFixed(2, 1);
     },
     cCenter(){
+      if (BigNumber(this.sum).comparedTo(0) === 0) {
+        return 0
+      }
       return BigNumber(this.center).div(this.sum).times(100).toFixed(2, 1);
     },
     cRight(){
