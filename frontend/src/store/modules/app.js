@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie'
-import { WEB3_STATUS } from '@/utils/Constants.js'
+import {WALLET_TYPE, WEB3_STATUS} from '@/utils/Constants.js'
 
 const state = {
   sidebar: {
@@ -9,7 +9,7 @@ const state = {
   device: 'desktop',
   web3: null,
   web3Status: WEB3_STATUS.UNAVAILABLE,
-  loading: true, //应用初始化中，请等待
+  loading: false, //应用初始化中，请等待
 }
 
 const mutations = {
@@ -38,7 +38,8 @@ const mutations = {
   },
   LOADING_COMPLETE: (state) => {
     state.loading = false
-  }
+  },
+
 }
 
 const actions = {
@@ -51,14 +52,20 @@ const actions = {
   toggleDevice({ commit }, device) {
     commit('TOGGLE_DEVICE', device)
   },
-  setWeb3({ commit }, {web3, settings}) {
-    web3.initWeb3(settings).then(() => {
-      console.info("Init web3 finished");
-      commit('SET_WEB3', web3);
-    });
+  async setWeb3({ commit }, {web3, settings, type}) {
+    await web3.initWeb3(settings, type)
+    console.info("Init web3 finished", web3.account);
+    if (web3.account) {
+      localStorage.setItem('connectorId', type || WALLET_TYPE.INJECTED)
+    }
+    commit('SET_WEB3', web3);
   },
   setWeb3Status({ commit }, status) {
     commit('SET_WEB3_STATUS', status);
+  },
+  async disconnect({ commit }, {web3}) {
+    localStorage.removeItem('connectorId')
+    await web3.disconnect()
   },
   loadingComplete({ commit }) {
     commit('LOADING_COMPLETE');

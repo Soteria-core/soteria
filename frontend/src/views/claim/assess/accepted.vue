@@ -10,7 +10,7 @@
       <el-row class="content">
         <el-col :span="11">
           <highlight>Total stake:</highlight>
-          <highlight class="right-btn">
+          <highlight class="right-btn mb20">
             <span>{{$etherToNumber(options.staked)}} SOTE</span>
           </highlight>
         </el-col>
@@ -19,12 +19,12 @@
         </el-col>
         <el-col :span="11">
           <highlight>Stake period ends:</highlight>
-          <highlight class="right-btn">
+          <highlight class="right-btn mb20">
             <span>{{$secondsToDateString(parseInt(this.options.period))}}</span>
           </highlight>
         </el-col>
       </el-row>
-      <div class="right-btn">
+      <div class="right-btn mb20">
         <el-button round type="primary" size="small" @click="increase">Increase stake</el-button>
       </div>
     </el-card>
@@ -75,7 +75,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/element-variables.scss';
 #claim-assess-accepted{
   line-height: 35px;
   .secondary-text{
@@ -83,7 +82,6 @@ export default {
   }
   .right-btn{
     float: right;
-    margin-bottom: 20px;
   }
   .divider{
     text-align: center;

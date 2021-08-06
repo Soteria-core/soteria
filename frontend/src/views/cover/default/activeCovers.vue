@@ -8,6 +8,7 @@
     style="width: 100%">
     <el-table-column
       prop="contract"
+      min-width="160"
       label="PROJECT">
       <template slot-scope="scope">
         <div v-if="scope.row.contract">
@@ -17,31 +18,36 @@
       </template>
     </el-table-column>
     <el-table-column
-      prop="cid" width="100"
+      prop="cid"
+      width="100"
       label="ID">
     </el-table-column>
     <el-table-column
-      prop="sumAssured" width="240"
+      prop="sumAssured"
+      min-width="240"
       label="COVER AMOUNT">
       <template slot-scope="scope">
         {{scope.row.sumAssured}} BNB
       </template>
     </el-table-column>
-    <el-table-column width="240"
+    <el-table-column
+      min-width="240"
       label="PREMIUM">
       <template slot-scope="scope">
         {{$etherToNumber(scope.row.premiumNXM)}} SOTE
       </template>
     </el-table-column>
     <el-table-column
-      prop="coverPeriod" width="200"
+      prop="coverPeriod"
+      min-width="200"
       label="PERIOD">
       <template slot-scope="scope">
         {{formatPeriod(scope.row)}}
       </template>
     </el-table-column>
     <el-table-column
-      prop="status" width="150"
+      prop="status"
+      min-width="150"
       label="STATUS">
       <template slot-scope="scope">
         <el-tag :type="coverStatusColors[scope.row.status]" :class="{ 'el-tag-blue': coverStatusColors[scope.row.status]=='' }">
@@ -49,7 +55,8 @@
         </el-tag>
       </template>
     </el-table-column>
-    <el-table-column width="100"
+    <el-table-column
+      width="100"
       label="ACTIONS">
       <template slot-scope="scope">
         <el-link type="primary" :disabled="scope.row.cannotClaim" :underline="false" @click="claim(scope.row)">Claim</el-link>
@@ -63,7 +70,6 @@ import { watch } from '@/utils/watch.js';
 import { mapGetters } from 'vuex';
 import QuotationDataContract from '@/services/QuotationData';
 import TokenFunctionsContract from '@/services/TokenFunctions';
-import Moment from 'moment';
 import { getCoverContracts, loadCover } from '@/api/cover.js';
 import { BigNumber } from 'bignumber.js';
 
@@ -92,14 +98,7 @@ export default {
 
   },
   watch: {
-    web3Status: watch.web3Status,
-    "member.isMember": {
-      handler(newVal){
-        if(newVal){
-          this.initData();
-        }
-      }
-    }
+    web3Status: watch.web3Status
   },
   created(){
     this.initData();
@@ -123,17 +122,25 @@ export default {
         if(!this.member.isMember){
           return;
         }
+        const account = this.member.account;
         this.activeCovers.splice(0, this.activeCovers.length);
         const instance = this.QuotationData.getContract().instance;
-        const ids = await instance.getAllCoversOfUser(this.member.account);
+        const ids = await instance.getAllCoversOfUser(account);
         const response = await getCoverContracts(this);
         const contracts = response.data;
-
         for(let i=ids.length - 1; i>=0; i--){
+          if (account !== this.member.account) { // 这个时候用户切换账号，停止循环
+            break;
+          }
           try{
             let cover = await loadCover(this, ids[i], true, contracts);
             cover.cannotClaim = await this.cannotClaim(cover);
-            this.activeCovers.push(cover);
+            const isExist = this.activeCovers.find(p => {
+              return p.cid === cover.cid
+            })
+            if (account === this.member.account && !isExist) {
+              this.activeCovers.push(cover);
+            }
           }catch(e){
             console.error(e);
           }

@@ -2,7 +2,7 @@
   <div id="stake-stake-selected-agreement" class="secondary-text">
     <el-checkbox-group v-model="options.terms">
       <el-checkbox label="risk">I agree to the lock up period and risks.</el-checkbox>
-      <el-checkbox label="max">I understand the maximum I could lose is {{options.maxTotalAmount}} SOTE.</el-checkbox>
+      <el-checkbox label="max">I understand the maximum I could lose is {{ options.perAmount }} SOTE.</el-checkbox>
     </el-checkbox-group>
   </div>
 </template>
