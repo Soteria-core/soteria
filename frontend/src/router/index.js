@@ -111,6 +111,11 @@ export const constantRoutes = [
                 component: () => import('@/views/stake/stats/index')
             },
             {
+              path: 'quickstake',
+              name: 'QuickStake',
+              component: () => import('@/views/stake/quickstake/index')
+          },
+            {
                 path: 'stake',
                 name: 'StakeStake',
                 component: () => import('@/views/stake/stake/index')
@@ -166,8 +171,23 @@ export const constantRoutes = [
       {
         path: 'stats',
         name: 'Stats',
+        redirect: '/system/stats/default',
         component: () => import('@/views/stats/index'),
-        meta: { title: 'Stats', icon: 'el-icon-s-data' }
+        meta: { title: 'Stats', icon: 'el-icon-s-data' },
+        children: [
+          {
+              path: 'default',
+              name: 'PlateformStats',
+              component: () => import('@/views/stats/default/index'),
+              meta: { title: 'Plateform Stats' }
+          },
+          {
+              path: 'project',
+              name: 'ProjectStats',
+              component: () => import('@/views/stats/project/index'),
+              meta: { title: 'Project Stats' }
+          }
+      ]
       }
     ]
   },

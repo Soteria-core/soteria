@@ -1,30 +1,44 @@
 <template>
-  <div id="grantToken" v-loading.fullscreen.lock="loading"
+  <div
+    id="grantToken"
+    v-loading.fullscreen.lock="loading"
     v-if="showGrants()"
     element-loading-text="Transaction is confirming ...">
     <el-card class="box-card" v-for="contAllowance in contractsAllowance" v-if="showGrant(contAllowance)">
-      <svg-icon icon-class="circle" class="icon error-color"></svg-icon>
-      Make sure sufficient SOTE allowance approved before swap or deposit. Current allowance to
-      <el-button type="text">{{contAllowance.contractName}}</el-button> contract is:
-      <span class="highlight">{{formatAllowance(contAllowance.curAllowance)}}</span><span class="end">.</span>
-      <el-button type="primary" round @click="grant(contAllowance)" size="small">Approve</el-button>
+      <el-row type="flex" style="flex-wrap: wrap;" justify="space-between" align="middle">
+        <el-col :xs="24" :sm="24" :md="20" style="line-height: 24px" :class="{'mb16': device === 'mobile'}">
+          <svg-icon icon-class="circle" class="icon error-color"></svg-icon>
+          Make sure sufficient {{ contAllowance.tokenName }} allowance approved before swap or deposit. Current allowance to
+          <span style="color: #FC5653">{{contAllowance.contractName}}</span> contract is:
+          <span class="highlight">{{formatAllowance(contAllowance.curAllowance)}}</span><span class="end">.</span>
+        </el-col>
+        <el-button type="primary" round @click="grant(contAllowance)" size="small">Approve</el-button>
+      </el-row>
     </el-card>
-    <el-dialog :title="'Grant ' + curAllowance.contractName + ' permission'"
-        :visible.sync="dialogFormVisible" append-to-body
-        :close-on-click-modal="false">
+    <el-dialog
+      :title="'Grant ' + curAllowance.contractName + ' permission'"
+      :visible.sync="dialogFormVisible"
+      :width="device==='mobile' ? '100%' : '50%'"
+      append-to-body
+      :close-on-click-modal="false">
       <el-form :model="form" label-width="150px">
         <el-form-item label="Current allowance:">
-          <span class="highlight">{{formatAllowance(curAllowance.curAllowance)}}</span> SOTE
+          <span class="highlight">{{formatAllowance(curAllowance.curAllowance)}}</span> {{ curAllowance.tokenName }}
         </el-form-item>
         <el-form-item label="Allowance type:">
           <el-radio-group v-model="type">
-            <el-radio-button label="Custom"></el-radio-button>
             <el-radio-button label="Max"></el-radio-button>
+            <el-radio-button label="Custom"></el-radio-button>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="New allowance:">
-          <el-input-number v-if="type=='Custom'" v-model="form.allowance" :min="1" :step="100"></el-input-number>
-          <span v-else style="font-size:22px;">∞</span> SOTE
+          <span v-if="type=='Max'" style="font-size:22px;">∞</span>
+          <el-input-number
+            v-else
+            v-model="form.allowance"
+            :size="device==='mobile' ? 'small' : 'large'"
+            :min="1"
+            :step="100"></el-input-number> {{ curAllowance.tokenName }}
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -37,10 +51,9 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import elementStyle from '@/styles/element-variables.scss';
 import SOTETokenContract from '@/services/SOTEToken';
 import { watch } from '@/utils/watch.js';
-import { getAllowance, grantAllowance } from '@/api/common.js'
+import { getAllowance, getWSOTEAllowance, grantAllowance, grantWSOTEAllowance } from '@/api/common.js'
 import { BigNumber } from 'bignumber.js'
 
 export default {
@@ -53,6 +66,7 @@ export default {
       curAllowance: {
         contractName: null, // 需要授权的合约名称
         contractAddress: null, // 需要授权的合约地址
+        tokenName: "SOTE", // 需要授权的币种名称
         needAllowance: null, // 需要授权多少SOTE
         curAllowance: "0", // 当前已有授权SOTE
         load: false, // 还未加载当前allowance
@@ -61,7 +75,7 @@ export default {
       form: {
         allowance: "0"
       },
-      type: "Custom",
+      type: "Max",
       SOTEToken: null,
       dialogFormVisible: false,
       loading: false,
@@ -69,6 +83,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'device',
       'web3',
       'web3Status',
       'member'
@@ -89,10 +104,13 @@ export default {
     },
     async initContract(){
       this.SOTEToken = await this.getContract(SOTETokenContract);
-      console.info("SOTEToken:", this.SOTEToken);
+      // console.info("SOTEToken:", this.SOTEToken);
     },
     initEvent(){
-      this.$Bus.$on(this.$EventNames.refreshAllowance, async (contractAddress, contractName) => {
+      this.$Bus.$on(this.$EventNames.refreshAllowance, async (contractAddress, contractName, tokenName="SOTE") => {
+        this.contractsAllowance.forEach(item => {
+          item.show = item.contractName == contractName
+        })
         const list = this.contractsAllowance.filter(item=>item.contractName == contractName);
         let curAllowance = null;
         if(list != null && list.length == 1){
@@ -102,13 +120,20 @@ export default {
           curAllowance = {
             contractAddress: contractAddress,
             contractName: contractName,
+            tokenName: tokenName,
             curAllowance: "0",
             needAllowance: null,
             load: false,
+            show: true
           }
           this.contractsAllowance.push(curAllowance);
         }
-        const allowance = await getAllowance(this, contractAddress);
+        let allowance = "0"
+        if (tokenName === "SOTE") {
+          allowance = await getAllowance(this, contractAddress);
+        } else if (tokenName === "wSOTE") {
+          allowance = await getWSOTEAllowance(this, contractAddress)
+        }
         curAllowance.curAllowance = allowance;
         curAllowance.load = true;
         this.$Bus.$emit(this.$EventNames.refreshBalance, this); // 刷新余额
@@ -161,20 +186,30 @@ export default {
       return this.contractsAllowance.filter(item => this.showGrant(item)).length > 0;
     },
     showGrant(contAllowance){
-        if(contAllowance.contractName && this.member.isMember){
-          if(!contAllowance.load){
-            return false;
-          }
-          const curAllowanceBN = BigNumber(contAllowance.curAllowance);
-          if(contAllowance.needAllowance != null && contAllowance.needAllowance > 0){
-            const needAllowanceBN = BigNumber(contAllowance.needAllowance.toString());
-            return needAllowanceBN.comparedTo(curAllowanceBN) >= 0;
-          }
-          const balanceBN = BigNumber(this.member.balance.toString());
-
-          return balanceBN.comparedTo(curAllowanceBN) >= 0;
-        }
+      if (!contAllowance.show) {
+        return false
+      }
+      if(!contAllowance.contractName) {
+        return false
+      }
+      if (contAllowance.contractName !== 'BuyBack' && !this.member.isMember) {
         return false;
+      }
+      if(!contAllowance.load){
+        return false;
+      }
+      const curAllowanceBN = BigNumber(contAllowance.curAllowance);
+      if(contAllowance.needAllowance != null && contAllowance.needAllowance > 0){
+        const needAllowanceBN = BigNumber(contAllowance.needAllowance.toString());
+        return needAllowanceBN.comparedTo(curAllowanceBN) >= 0;
+      }
+      let balanceBN = "0"
+      if (contAllowance.tokenName === 'SOTE') {
+        balanceBN = BigNumber(this.member.balance.toString());
+      } else if (contAllowance.tokenName === 'wSOTE') {
+        balanceBN = BigNumber(this.member.wbalance.toString());
+      }
+      return balanceBN.comparedTo(curAllowanceBN) >= 0;
     },
     grant(contAllowance){
       this.dialogFormVisible = true;
@@ -187,19 +222,29 @@ export default {
       }
     },
     async grantAllowance(){
-      this.loading = true;
-      let allowance = this.form.allowance;
+      let allowance = this.form.allowance || '0';
       if(this.type == "Max"){
         allowance = new this.$CustomWeb3.web3.utils.BN(this.$MaxUint256);
       }else{
+        if (allowance > 1000000000000000) {
+          this.$message.error('The input number is too large.')
+          return
+        }
         allowance = this.$ether(allowance.toString());
       }
-      const result = await grantAllowance(this, this.curAllowance.contractAddress, allowance);
+      this.loading = true;
+      let result = null
+      if (this.curAllowance.tokenName === 'SOTE') {
+        result = await grantAllowance(this, this.curAllowance.contractAddress, allowance);
+      } else if (this.curAllowance.tokenName === 'wSOTE') {
+        result = await grantWSOTEAllowance(this, this.curAllowance.contractAddress, allowance);
+      }
+
       if(result){
-        this.$message.success(`Approved to grant ${this.curAllowance.contractName} permission is ${this.$etherToNumber(allowance)} SOTE`);
+        this.$message.success(`Approved to grant ${this.curAllowance.contractName} permission is ${this.$etherToNumber(allowance)} ${this.curAllowance.tokenName}`);
         this.dialogFormVisible = false;
         this.curAllowance.curAllowance = allowance.toString();
-        this.$Bus.$emit(this.$EventNames.allowance, this.curAllowance.contractName, this.curAllowance);
+        this.$Bus.$emit(this.$EventNames.allowance, this.curAllowance);
       }
       this.loading = false;
     }
@@ -208,7 +253,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/element-variables.scss';
 #grantToken{
   display: inline-block;
   font-size: 14px;

@@ -1,8 +1,10 @@
 <template>
-  <div id="claim-default-stake-extend" v-loading.fullscreen.lock="loading"
+  <div
+    id="claim-default-stake-extend"
+    v-loading.fullscreen.lock="loading"
     element-loading-text="Transaction is confirming ...">
     <el-row :gutter="20">
-      <el-col :span="12">
+      <el-col :xs="24" :sm="24" :md="12" class="mb20">
         <div class="normal-text-bold">Extend stake period</div>
         <div class="secondary-text">
           When you assess a claim your stake period will be automatically increased by 7 days.
@@ -10,13 +12,13 @@
           During the stake period you can't sell these tokens or use them for other purposes.
         </div>
       </el-col>
-      <el-col :span="12">
+      <el-col :xs="24" :sm="24" :md="12">
         <el-form ref="form" :rules="rules" :model="form">
-          <el-row class="transfer-area" :gutter="15">
-            <el-col :span="12">
+          <el-row class="transfer-area" type="flex" style="flex-wrap: wrap;" justify="space-between" align="middle" :gutter="15">
+            <el-col :xs="24" :sm="12" :md="4" :lg="12">
 
             </el-col>
-            <el-col :span="12">
+            <el-col :xs="24" :sm="12" :md="20" :lg="12" class="mb20">
               <el-card>
                 <div slot="header" class="normal-text">
                   <span>Extend stake period by</span>
@@ -35,9 +37,9 @@
             </el-col>
           </el-row>
           <el-row class="buttonArea">
-              <div class="right-rate">
-                  <el-button type="primary" round @click="extend">Extend period</el-button>
-              </div>
+            <div class="right-rate">
+              <el-button type="primary" round @click="extend">Extend period</el-button>
+            </div>
           </el-row>
         </el-form>
       </el-col>
@@ -150,7 +152,6 @@ export default {
 @import '@/styles/element-variables.scss';
 #claim-default-stake-extend{
   .buttonArea{
-    margin-top: 20px;
     margin-bottom: 10px;
   }
   .normal-text{
@@ -183,12 +184,6 @@ export default {
     color: #909399;
   }
   .transfer-area{
-      /*flex 布局*/
-      display: flex;
-      /*实现垂直居中*/
-      align-items: center;
-      /*实现水平居中*/
-      justify-content: center;
       text-align: justify;
       .icon-col{
         text-align: center;
