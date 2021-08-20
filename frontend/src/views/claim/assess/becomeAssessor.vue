@@ -7,7 +7,7 @@
       <span class="secondary-text">
         To submit this assessment you must become a claims assessor by staking an amount of SOTE for 30 days minimum.
         Your verdict power and rewards are proportional to your stake and for the specified period you can't sell these tokens or use them for other purposes.
-        If the Advisory Board deems voting to be fraudulent, they have the power to burn this amount. 
+        If the Advisory Board deems voting to be fraudulent, they have the power to burn this amount.
         For more info <el-button type="text">click here</el-button> or for the in-depth documents outlining the mehcanics
         <el-button type="text">click here</el-button>.
       </span>
@@ -69,7 +69,7 @@ export default {
         console.error(e);
         this.$message.error(e);
       });
-      
+
       instance.getLockedTokensValidity(this.member.account, this.$CLA_BYTE).then(res => {
         this.$set(this.options, "period", res.toString());
       }).catch(e => {
@@ -82,7 +82,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/element-variables.scss';
 #claim-assess-become{
   .secondary-text{
     line-height: 35px;

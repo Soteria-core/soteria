@@ -25,19 +25,21 @@ class BaseContract {
   }
   async initContract(flag){
     const contracts = store.getters.settings.contracts;
+
     // flag = true, 强制初始化
     if(this.contract && this.contract.instance && !flag){
-      console.info("Return old instance");
+      // console.info("Return old instance");
       return this.contract;
     }
     this.contract = new Contract(this.getJson(), contracts[this.getKey()], this.vue);
     if(!this.contract.instance){
       await this.contract.newInstance();
     }
-    console.info(`Instance contract ${this.getKey()}`);
+    // console.info(`Instance contract ${this.getKey()}`);
 
     return this.contract;
   }
 }
 
 export default BaseContract
+

@@ -1,57 +1,68 @@
 <template>
-  <div id="claim-default-stake-becomeAssessor" v-loading.fullscreen.lock="loading"
+  <div
+    id="claim-default-stake-becomeAssessor"
+    v-loading.fullscreen.lock="loading"
     element-loading-text="Transaction is confirming ...">
     <el-row :gutter="20">
-      <el-col :span="12">
+      <el-col :xs="24" :sm="24" :md="12">
         <div class="normal-text-bold">Become a claims assessor</div>
         <div class="secondary-text">
           To earn reward as a claims assessor you need to stake an amount of SOTE for 30 days minimum.
-          Your verdict power and rewards are proportional to your stake and for the specified period you can't sell these tokens or use them for other purposes.
+          Your verdict power and rewards are proportional to your stake and for the specified period you can't sell
+          these tokens or use them for other purposes.
           If the Advisory Board deems voting to be fraudulent, they have the power to burn this amount.
         </div>
       </el-col>
-      <el-col :span="12">
+      <el-col :xs="24" :sm="24" :md="12">
         <el-form ref="form" :rules="rules" :model="form">
           <el-row class="transfer-area" :gutter="15">
-            <el-col :span="12">
+            <el-col :xs="24" :sm="12" class="mt20">
               <el-card>
                 <div slot="header" class="normal-text">
                   <span>Stake</span>
                 </div>
                 <div>
                   <el-form-item prop="amount">
-                    <el-input placeholder="Please enter an amount" class="right-input" v-model="form.amount" @input="onlyNumber">
+                    <el-input
+                      placeholder="Please enter an amount"
+                      class="right-input"
+                      v-model="form.amount"
+                      @input="onlyNumber">
                       <template slot="append">
                         SOTE
                       </template>
                     </el-input>
                   </el-form-item>
                 </div>
-                <div class="right-rate" style="color:#FFFFFF;"> ~ </div>
+                <div class="right-rate" style="color:#FFFFFF;"> ~</div>
               </el-card>
             </el-col>
-            <el-col :span="12">
+            <el-col :xs="24" :sm="12" class="mt20">
               <el-card>
                 <div slot="header" class="normal-text">
                   <span>Stake period</span>
                 </div>
                 <div>
                   <el-form-item prop="period">
-                    <el-input placeholder="Please enter an integer" class="right-input" v-model="form.period" @input="onlyInteger">
+                    <el-input
+                      placeholder="Please enter an integer"
+                      class="right-input"
+                      v-model="form.period"
+                      @input="onlyInteger">
                       <template slot="append">
                         DAYS
                       </template>
                     </el-input>
                   </el-form-item>
                 </div>
-                <div class="right-rate secondary-text">Stake period ends: {{period}}</div>
+                <div class="right-rate secondary-text">Stake period ends: {{ period }}</div>
               </el-card>
             </el-col>
           </el-row>
           <el-row class="buttonArea">
-              <div class="right-rate">
-                  <el-button type="primary" round @click="becomeAssessor">Confirm</el-button>
-              </div>
+            <div class="right-rate">
+              <el-button type="primary" round @click="becomeAssessor">Confirm</el-button>
+            </div>
           </el-row>
         </el-form>
       </el-col>
@@ -60,27 +71,27 @@
 </template>
 
 <script>
-import { watch } from '@/utils/watch.js';
-import { mapGetters } from 'vuex';
+import {watch} from '@/utils/watch.js';
+import {mapGetters} from 'vuex';
 import TokenControllerContract from '@/services/TokenController';
-import { BigNumber } from 'bignumber.js'
+import {BigNumber} from 'bignumber.js'
 
 export default {
-  components:{
-  },
+  components: {},
   data() {
     return {
-      form:{
+      form: {
         amount: '',
         period: '',
       },
       rules: {
         period: [
-          { required: true, trigger: 'blur', type: "number", validator: this.validatePeriod },
+          {required: true, trigger: 'blur', type: "number", validator: this.validatePeriod},
         ],
       },
       TokenController: null,
       loading: false,
+      allowance: '0'
     }
   },
   computed: {
@@ -90,7 +101,7 @@ export default {
       'web3Status',
       'settings'
     ]),
-    period(){
+    period() {
       const date = (new Date().getTime()) / 1000 + this.form.period * 24 * 60 * 60;
       return this.$secondsToDateString(date);
     }
@@ -98,71 +109,83 @@ export default {
   watch: {
     web3Status: watch.web3Status,
   },
-  created(){
+  created() {
     this.initData();
-    this.$Bus.bindEvent(this.$EventNames.switchAccount, this._uid, (account)=>{
+    this.$Bus.bindEvent(this.$EventNames.switchAccount, this._uid, (account) => {
       this.initData();
+    });
+    this.$Bus.$on(this.$EventNames.allowance, (allowance)=>{
+      if(!allowance){
+        this.allowance = "0";
+      }
+      if(allowance && allowance.contractName == "TokenController"){
+        this.allowance = allowance.curAllowance ? allowance.curAllowance : "0";
+      }
     });
   },
   methods: {
-    initData(){
-      if(this.web3Status === this.WEB3_STATUS.AVAILABLE){
+    initData() {
+      if (this.web3Status === this.WEB3_STATUS.AVAILABLE) {
         this.initContract();
       }
     },
-    async initContract(){
+    async initContract() {
       // 需要授权
       this.$Bus.$emit(this.$EventNames.refreshAllowance, this.settings.contracts.TokenController, "TokenController");
       this.TokenController = await this.getContract(TokenControllerContract);
     },
-    validatePeriod(rule, value, callback){
-      if(BigNumber(value).lt(this.settings.claim.stake.minPeriod) || BigNumber(value).gt(this.settings.claim.stake.maxPeriod)){
+    validatePeriod(rule, value, callback) {
+      if (BigNumber(value).lt(this.settings.claim.stake.minPeriod) || BigNumber(value).gt(this.settings.claim.stake.maxPeriod)) {
         callback(new Error(`Enter a period of ${this.settings.claim.stake.minPeriod} days minimum and ${this.settings.claim.stake.maxPeriod} days maximum!`));
         return;
       }
       callback();
     },
     //只允许输入合法的数字
-    onlyNumber(value){
+    onlyNumber(value) {
       let newValue = this.getNumber(value);
-      if(newValue.length > 0){
+      if (newValue.length > 0) {
         newValue = parseInt(newValue);
-      }else{
+      } else {
         newValue = '';
       }
       this.form.amount = newValue;
       return newValue;
     },
     //只允许输入合法的数字
-    onlyInteger(value){
+    onlyInteger(value) {
       let newValue = this.getNumber(value).replace(/\./g, "");
-      if(newValue.length > 0){
+      if (newValue.length > 0) {
         newValue = parseInt(newValue);
-      }else{
+      } else {
         newValue = '';
       }
       this.form.period = newValue;
       return newValue;
     },
-    becomeAssessor(){
+    becomeAssessor() {
       const formAmount = this.form.amount || 0;
       const amount = this.$ether(formAmount.toString());
-      if(BigNumber(amount.toString()).comparedTo(0) <= 0){
+      if (BigNumber(amount.toString()).comparedTo(0) <= 0) {
         this.$message.error("Please enter a valid amount");
         return;
       }
-      if(BigNumber(amount.toString()).comparedTo(this.member.balance) > 0){
+      if (BigNumber(amount.toString()).comparedTo(this.member.balance) > 0) {
         this.$message.error("Insufficient balance");
         return;
       }
+      if (BigNumber(amount.toString()).comparedTo(this.allowance) > 0) {
+        this.$message.error("Make sure sufficient SOTE allowance approved.");
+        return;
+      }
       this.$refs.form.validate(valid => {
-        if(valid){
+        if (valid) {
           this.loading = true;
           const instance = this.TokenController.getContract().instance;
           // _reason为锁仓理由，这里填“CLA”字符串的byte形式为0x434c41；
           const reason = this.$CLA_BYTE;
           const time = (this.form.period * 24 * 60 * 60).toString();
-          instance.lock(reason, amount, time, { from: this.member.account }).then(res => {
+          instance.lock(reason, amount, time, {from: this.member.account}).then(res => {
             console.info(res, res.toString());
             this.$emit("refresh");
             this.$message.success("Stake successfully");
@@ -181,66 +204,79 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/element-variables.scss';
-#claim-default-stake-becomeAssessor{
-  .buttonArea{
+
+#claim-default-stake-becomeAssessor {
+  .buttonArea {
     margin-top: 20px;
     margin-bottom: 10px;
   }
-  .normal-text{
+
+  .normal-text {
     font-weight: bold;
   }
-  .normal-text-bold{
+
+  .normal-text-bold {
     line-height: 40px;
   }
-  .secondary-text{
+
+  .secondary-text {
     line-height: 26px;
   }
-  .icon{
+
+  .icon {
     margin-right: 10px;
   }
+
   .right {
     position: absolute;
     right: 0px;
     top: 0px;
   }
+
   .right-rate {
     float: right;
     line-height: 40px;
   }
+
   .balance {
     background-color: #FEABA9;
     color: #FFFFFF !important;
   }
-  .box-card-to{
+
+  .box-card-to {
     background-color: #DCDFE6;
     color: #909399;
   }
-  .transfer-area{
-      /*flex 布局*/
-      display: flex;
-      /*实现垂直居中*/
-      align-items: center;
-      /*实现水平居中*/
-      justify-content: center;
-      text-align: justify;
-      .icon-col{
-        text-align: center;
-        div{
-            i {
-                font-size: 30px;
-                color: $--color-primary;
-                cursor: pointer;
-            }
+
+  .transfer-area {
+    /*flex 布局*/
+    display: flex;
+    /*实现垂直居中*/
+    align-items: center;
+    /*实现水平居中*/
+    justify-content: center;
+    text-align: justify;
+    flex-wrap: wrap;
+
+    .icon-col {
+      text-align: center;
+
+      div {
+        i {
+          font-size: 30px;
+          color: $--color-primary;
+          cursor: pointer;
         }
       }
+    }
 
   }
 }
 </style>
 <style lang="scss">
-  .right-input {
-    .el-input__inner {
-      text-align: right !important;
-    }
+.right-input {
+  .el-input__inner {
+    text-align: right !important;
   }
+}
 </style>

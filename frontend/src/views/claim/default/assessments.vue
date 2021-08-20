@@ -9,11 +9,13 @@
     height="calc(100vh - 300px)"
     style="width: 100%">
     <el-table-column
-      prop="claimId" width="100"
+      prop="claimId"
+      width="100"
       label="ID">
     </el-table-column>
     <el-table-column
       prop="contract"
+      min-width="160"
       label="PROJECT">
       <template slot-scope="scope">
         <div v-if="scope.row.contract">
@@ -23,14 +25,16 @@
       </template>
     </el-table-column>
     <el-table-column
-      prop="cover.sumAssured" width="240"
+      prop="cover.sumAssured"
+      min-width="240"
       label="COVER AMOUNT">
       <template slot-scope="scope">
         {{scope.row.cover.sumAssured}} BNB
       </template>
     </el-table-column>
     <el-table-column
-      prop="assessed" width="200"
+      prop="assessed"
+      min-width="200"
       label="ASSESSED AS">
       <template slot-scope="scope">
         <span v-if="scope.row.type=='CA'">Claims assessor</span>
@@ -38,7 +42,8 @@
       </template>
     </el-table-column>
     <el-table-column
-      prop="vote.verdict" width="150"
+      prop="vote.verdict"
+      min-width="150"
       label="YOUR VERDICT">
       <template slot-scope="scope">
         <el-tag :type="verdictsColors[scope.row.vote.verdict]">
@@ -47,7 +52,8 @@
       </template>
     </el-table-column>
     <el-table-column
-      prop="finalVerdict" width="150"
+      prop="finalVerdict"
+      min-width="150"
       label="FINAL VERDICT">
       <template slot-scope="scope">
         <el-tag :type="verdictsColors[scope.row.finalVerdict]">
@@ -132,14 +138,14 @@ export default {
     },
     initClaims(){
       this.claims.splice(0, this.claims.length);
-      
+
       console.info("加载数据...............");
       this.AssessmentsServiceCA = new AssessmentsService(this, this.claims, "CA", this.contracts);
       this.AssessmentsServiceMV = new AssessmentsService(this, this.claims, "MV", this.contracts);
     },
     load(){
       if(this.AssessmentsServiceCA){
-        this.AssessmentsServiceCA.loadData(); 
+        this.AssessmentsServiceCA.loadData();
       }
       if(this.AssessmentsServiceMV){
         this.AssessmentsServiceMV.loadData();
