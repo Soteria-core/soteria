@@ -11,8 +11,7 @@
         style="width: 100%">
         <el-table-column
           type="index"
-          label="No."
-          width="100">
+          label="No.">
         </el-table-column>
         <el-table-column
           property="name"
@@ -47,43 +46,31 @@ export default {
       'web3Status',
     ])
   },
-  watch: {
-    web3Status: watch.web3Status,
-  },
   created(){
     this.initData();
-    this.$Bus.bindEvent(this.$EventNames.switchAccount, this._uid, (account)=>{
-      this.initData();
-    });
   },
   methods: {
     initData(){
       this.loadCategories();
-      if(this.web3Status === this.WEB3_STATUS.AVAILABLE){
-        this.initContract();
-      }
-    },
-    async initContract(){
     },
     loadCategories(){
       getCategories().then(res => {
         this.categories = res.data;
         this.$refs.singleTable.setCurrentRow(this.categories[0]);
-        this.options.active = this.categories[0];
+        this.options.activeCategory = this.categories[0];
       }).catch(e => {
         this.$message.error(e.message);
         console.error(e);
       });
     },
     handleSelect(row){
-      this.options.active = row;
+      this.options.activeCategory = row;
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/element-variables.scss';
 #gov-category{
   height: calc(100vh - 146px);
   text-align: center;
