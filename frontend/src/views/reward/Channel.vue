@@ -1,7 +1,7 @@
 <template>
   <div class="channel">
-    <el-row :gutter="20" type="flex" justify="space-between">
-      <el-col :span="8">
+    <el-row :gutter="20" type="flex" justify="space-between" style="flex-wrap: wrap">
+      <el-col :xs="24" :sm="24" :md="8" class="mb20">
         <el-card class="item box-card">
           <div class="item-info">
             <div class="name">STAKING</div>
@@ -11,7 +11,7 @@
           <el-button type="primary" plain round @click="toStake">Stake</el-button>
         </el-card>
       </el-col>
-      <el-col :span="8">
+      <el-col :xs="24" :sm="24" :md="8" class="mb20">
         <el-card class="item box-card">
           <div class="item-info">
             <div class="name">CLAIM ASSESSMENT</div>
@@ -21,14 +21,14 @@
           <el-button type="primary" plain round @click="viewOpenClaims">View open claims</el-button>
         </el-card>
       </el-col>
-      <el-col :span="8">
+      <el-col :xs="24" :sm="24" :md="8" class="mb20">
         <el-card class="item box-card">
           <div class="item-info">
             <div class="name">GOVERNANCE</div>
             <div class="balance">{{$etherToNumber(rewards[2])}} SOTE</div>
             <div>Earn rewards by voting in governance. </div>
           </div>
-          <el-button type="primary" plain round @click="vote" :disabled="!settings.features.Governance">Vote</el-button>
+          <el-button type="primary" plain round @click="vote">Vote</el-button>
         </el-card>
       </el-col>
     </el-row>
@@ -36,49 +36,15 @@
 </template>
 
 <script>
-import {getRewardData} from "@/api/reward";
 import {mapGetters} from "vuex";
-import {watch} from "@/utils/watch";
 
 export default {
   name: 'Channel',
-  data() {
-    return {
-      rewards: [],
-      onload: false,
-    }
-  },
+  props: ['rewards'],
   computed: {
-    ...mapGetters(['web3Status', 'member', 'settings']),
-  },
-  watch: {
-    web3Status: watch.web3Status,
-    "member.isMember": {
-      handler(newVal){
-        if(newVal){
-          this.initData();
-        }
-      }
-    }
-  },
-  created() {
-    this.initData();
-    this.$Bus.bindEvent(this.$EventNames.switchAccount, this._uid, ()=>{
-      this.initData();
-    });
+    ...mapGetters(['settings']),
   },
   methods: {
-    async initData(){
-      if(this.web3Status === this.WEB3_STATUS.AVAILABLE){
-        if(!this.onload){
-          this.rewards = await getRewardData(this);
-          if(this.rewards.filter(item => !item).length == 0){
-            this.onload = true;
-          }
-          this.$emit("rewardsData", this.rewards);
-        }
-      }
-    },
     toStake() {
       this.$router.push("/system/stake/default");
     },
