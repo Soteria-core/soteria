@@ -57,6 +57,18 @@ export const statusFormatForMember = (data) => {
 }
 
 export const statusFormat = (data) => {
+  if (BigNumber(data.voteClosing).eq(1)) {
+    return {
+      status: 'Waiting for Closing',
+      tagType: 'info'
+    }
+  }
+  if (BigNumber(data.voteClosing).eq(-2)) {
+    return {
+      status: 'Already Closed',
+      tagType: 'info'
+    }
+  }
   if (BigNumber(data.status).eq(STATUS.CA_PENDING)) {
     if (BigNumber(data.caVoteId).gt(0)) {
       return {
