@@ -82,10 +82,8 @@ export default {
       return BigNumber(this.options.totalAmount.toString()).toFixed(2, 1);
     },
     totalDeposit(){
-      return BigNumber(this.options.totalAmount.toString()).plus(this.options.perAmount).toFixed(2, 1);
-    },
-    perAmount(){
-      return BigNumber(this.options.perAmount).toFixed(2, 1);
+      const depositAmount = this.options.perAmount || 0
+      return BigNumber(this.options.totalAmount.toString()).plus(depositAmount).toFixed(2, 1);
     },
     beforeLength(){
       return this.options.selectedProject.filter(item => item.stakedStatus == 'staked').length;

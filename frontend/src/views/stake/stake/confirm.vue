@@ -6,6 +6,7 @@
       style="width: 100%">
       <el-table-column
         prop="name"
+        min-width="160"
         label="PROJECT">
         <template slot-scope="scope">
           <img :src="scope.row.icon" class="project-list-icon" />
@@ -14,6 +15,7 @@
       </el-table-column>
       <el-table-column
         prop="stake"
+        min-width="200"
         label="ADD">
         <template slot-scope="scope">
           <el-input size="mini" style="width:180px;" disabled v-model="scope.row.stake" class="right-input">
@@ -23,6 +25,7 @@
       </el-table-column>
       <el-table-column
         prop="stake"
+        min-width="120"
         label="STAKE">
         <template slot-scope="scope">
           {{staked(scope.row)}} SOTE
@@ -32,7 +35,7 @@
         width="100"
         label="OPTIONS">
         <template slot-scope="scope">
-          
+
         </template>
       </el-table-column>
     </el-table>
