@@ -4,16 +4,22 @@
       <div slot="header" class="clearfix">
         <span>Find Contract</span>
       </div>
-      <el-form inline :disabled="!member.isMember" :model="form">
-        <el-form-item label="Show">
-          <el-checkbox-group v-model="form.show" @change="filter">
-            <el-checkbox-button label="Smart contracts" key="Smart contracts">Smart contracts</el-checkbox-button>
-            <el-checkbox-button label="Custodians" key="Custodians">Custodians</el-checkbox-button>
-          </el-checkbox-group>
-        </el-form-item>
-        <el-form-item label="Name:">
-          <el-input v-model="form.search" placeholder="e.g. Compound" @keyup.native="filter"></el-input>
-        </el-form-item>
+      <el-form inline :model="form">
+        <el-row>
+          <el-col :xs="24" :sm="24" :md="12" class="mb20">
+            <el-form-item label="Show">
+              <el-checkbox-group v-model="form.show" @change="filter">
+                <el-checkbox-button label="Smart contracts" key="Smart contracts">Smart contracts</el-checkbox-button>
+                <el-checkbox-button label="Custodians" key="Custodians">Custodians</el-checkbox-button>
+              </el-checkbox-group>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="24" :md="12" class="mb20">
+            <el-form-item label="Name:">
+              <el-input v-model="form.search" placeholder="e.g. PancakeSwap" @keyup.native="filter"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-form-item>
           <div class="secondary-text">
             <svg-icon icon-class="circle" class="icon error-color"></svg-icon>
@@ -24,12 +30,20 @@
     </el-card>
     <br/>
     <el-row :gutter="20">
-      <el-col v-for="contract in contracts" v-if="contract.status!='discard'" :span="6" style="margin-bottom: 20px;">
+      <el-col
+        v-for="contract in contracts"
+        :key="contract.address"
+        v-if="contract.status!='discard'"
+        :xs="24"
+        :sm="12"
+        :md="12"
+        :lg="6"
+        class="mb20">
         <el-card class="li-degrees-badge-parent">
           <DegreesBadge v-if="contract.new=='yes'" color="#dfe6ec" fromColor="#FC5653" toColor="#ff4949">
             NEW
           </DegreesBadge>
-          <div style="line-height: 40px;" class="title">
+          <div class="title">
             <img :src="contract.icon" class="project-large-icon" />
             <span>{{contract.name}}</span>
           </div>
@@ -37,15 +51,21 @@
             <el-form-item label="Contract type">
               {{contract.type}}
             </el-form-item>
-            <!-- <el-form-item label="Yearly Cost">
-              {{contract.yearlyCost}}
-            </el-form-item> -->
+            <el-form-item label="Yearly Cost">
+              {{contract.yearlyCost}}%
+            </el-form-item>
             <el-form-item label="Capacity">
               {{contract.capacityBNB}} BNB
             </el-form-item>
           </el-form>
           <div style="text-align: center;">
-            <el-button type="primary" :disabled="isSelected(contract)" round size="mini" style="width: 150px;" @click="selectContract(contract)">Select</el-button>
+            <el-button
+              type="primary"
+              :disabled="Number(contract.capacityBNB) < 1"
+              round
+              size="mini"
+              style="width: 150px;"
+              @click="selectContract(contract)">Select</el-button>
           </div>
         </el-card>
       </el-col>
@@ -129,7 +149,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import '@/styles/element-variables.scss';
+#cover-buyCover-contracts {
+  .secondary-text {
+    line-height: 24px;
+  }
+}
 .el-form-item {
   margin-bottom: 0px;
   .el-input{
@@ -143,6 +167,7 @@ export default {
   margin-right: 20px;
 }
 .title{
+  line-height: 40px;
   vertical-align: middle;
   font-size: 16px;
   font-weight: bold;

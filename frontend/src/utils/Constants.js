@@ -3,6 +3,11 @@ export const WEB3_STATUS = {
   "AVAILABLE": "available", // 区块链网络可用
 }
 
+export const WALLET_TYPE = {
+  INJECTED: "injected",
+  WALLET_CONNECT: "walletConnect"
+}
+
 export const BNB_BYTE8 = "0x424e4200";
 export const CLA_BYTE = "0x434c41"
 
