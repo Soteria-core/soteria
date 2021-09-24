@@ -5,7 +5,7 @@
         <highlight>Assessment verdict</highlight>
       </div>
       <div class="secondary-text">
-        Based on your answers, this claim should be 
+        Based on your answers, this claim should be
         <highlight red>denied</highlight>
         because the following requirements were note met:
       </div>
@@ -29,14 +29,14 @@
         <div v-if="options.criteria.hacks=='yes'">
           <svg-icon icon-class="circle" class="icon error-color"></svg-icon>
           The loss of funds should not have occurred due to phishing,
-          private key security breaches, malware, exchange hacks or any other activity where 
+          private key security breaches, malware, exchange hacks or any other activity where
           the covered smart contract continued to act as intended.
         </div>
         <div v-if="options.criteria.exteranal=='yes'">
           <svg-icon icon-class="circle" class="icon error-color"></svg-icon>
           The incident should not have occurred due to inputs external to the smart contract system,
           that behaved in an unintended ways, but the smart contract system continued to operate as intended.
-          (Where inputs include but are note limited to: oracles, governance systems, incentive structures, 
+          (Where inputs include but are note limited to: oracles, governance systems, incentive structures,
           miner behaviour and network congestion.)
         </div>
       </div>
@@ -85,7 +85,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/element-variables.scss';
 #claim-assess-denied{
   line-height: 35px;
   .secondary-text{
@@ -105,7 +104,7 @@ export default {
     color: #F56C6C;
   }
   .denied-reason{
-    color: #F56C6C;  
+    color: #F56C6C;
   }
 }
 </style>

@@ -5,7 +5,7 @@ import { BigNumber } from 'bignumber.js'
 export const getCoverContracts = async (vue) => {
   const [contractsRes, capacitiesRes] = await Promise.all([
     request({
-      url: `/data/contracts.json?nocache=${new Date().getTime()}`,
+      url: `/pub-api/frontend/data/contracts.json?nocache=${new Date().getTime()}`,
       method: 'get'
     }),
     request({
@@ -18,6 +18,7 @@ export const getCoverContracts = async (vue) => {
     const capacity = capacities.find(val => item.address.toUpperCase() === val.contractAddress.toUpperCase())
     if (capacity) {
       item.capacityBNB = vue.$etherToNumber(capacity.capacityBNB)
+      item.yearlyCost = capacity.yearlyCost
     }
   })
   return contractsRes
@@ -32,9 +33,20 @@ export const getQuote = (params) => {
   })
 }
 
+export const getTokensRetained = async (vue) => {
+  const QuotationData = await vue.getContract(QuotationDataContract)
+  const instance = QuotationData.getContract().instance;
+  try {
+    const data = await instance.tokensRetained()
+    return data.toString();
+  } catch (e) {
+    vue.$message.error(`Loading tokensRetained failed. ${e.toString()}`);
+  }
+}
+
 export const loadCover = async (vue, cid, isUpdate, contracts)=>{
   const QuotationData = await vue.getContract(QuotationDataContract);
-  const instance = QuotationData.getContract().instance; 
+  const instance = QuotationData.getContract().instance;
   console.info("读取cover");
   const cacheKey = "member_cover_" + cid;
   let cover = vue.getObjectCache(cacheKey);
@@ -65,7 +77,7 @@ export const loadCover = async (vue, cid, isUpdate, contracts)=>{
     memberAddress: nonStatusCover._memberAddress.toString(),
   }
   cover.contract = contracts ? contracts.find(item=>item.address.toLowerCase() == cover.scAddress.toString().toLowerCase()) : null;
-  
+
   vue.cacheObject(cacheKey, cover);
   console.info("完成cover");
   return cover;
