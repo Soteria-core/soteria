@@ -1,5 +1,10 @@
 // cover some element-ui styles
 
+.el-step__title {
+  padding: 7px 0;
+  line-height: 24px !important;
+}
+
 .el-breadcrumb__inner,
 .el-breadcrumb__inner a {
   font-weight: 400 !important;

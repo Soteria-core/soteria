@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'has-logo':showLogo}">
+  <div :class="{'has-logo':showLogo}" id="sidebar">
     <logo v-if="showLogo" :collapse="isCollapse" />
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import FastClick from 'fastclick'
 import { mapGetters } from 'vuex'
 import Logo from './Logo'
 import NewSidebarItem from './NewSidebarItem'
@@ -58,8 +59,8 @@ export default {
       return !this.sidebar.opened
     }
   },
-  created(){
-
+  mounted() {
+    FastClick.attach(document.getElementById('sidebar'));
   }
 }
 </script>

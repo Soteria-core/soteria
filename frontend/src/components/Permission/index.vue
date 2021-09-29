@@ -1,7 +1,7 @@
 <template>
-    <fragment v-if="(hasPermission && type=='remove') || type!='remove'">
-        <slot :hasPermission="hasPermission"></slot>
-    </fragment>
+  <fragment v-if="(hasPermission && type=='remove') || type!='remove'">
+    <slot :hasPermission="hasPermission"></slot>
+  </fragment>
 </template>
 <script>
     import store from '@/store'

@@ -4,6 +4,7 @@ const Bus = new Vue();
 
 Bus.$EventNames = {
   initMember: "Global:initMember",
+  refreshMember: "Member:refresh",
   resetAllowance: "Allowance:reset",
   refreshAllowance: "Allowance:refresh",
   allowance: "Allowance:get",
