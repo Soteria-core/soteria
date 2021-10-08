@@ -1,5 +1,8 @@
 <template>
-  <div :class="classObj" class="app-wrapper" v-loading.fullscreen.lock="appLoading"
+  <div
+    :class="classObj"
+    class="app-wrapper"
+    v-loading.fullscreen.lock="appLoading"
     element-loading-text="Application is loading ...">
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
     <sidebar class="sidebar-container" />
@@ -12,12 +15,12 @@
     <el-dialog
       title="Tooltip"
       :visible="showError"
-      width="500px"
+      :width="device==='mobile'?'360px':'500px'"
       :close-on-click-moda="false"
       :close-on-press-escape="false"
       :show-close="false"
       append-to-body
-      >
+    >
       <div v-if="tooltipType=='network'">
         <h1>Unsupported Network</h1>
 
@@ -60,6 +63,7 @@ export default {
   mixins: [ResizeMixin],
   computed: {
     ...mapGetters([
+      'device',
       'web3',
       'member',
       'settings',
@@ -71,16 +75,9 @@ export default {
     },
     showError(){
       if(this.web3 && this.web3.web3Provider && this.settings){
-        const isMetaMask = this.web3.web3Provider.isMetaMask;
-        if(!isMetaMask){
-          //没有安装metamask
-          this.tooltipType = "noMetaMask";
-          return true;
-        }
-        const version = this.web3.web3Provider.networkVersion;
+        const version = this.web3.web3Provider.networkVersion || this.web3.web3Provider.chainId;
         const defaultVersion = this.settings.networkVersion;
-        //判断网络是否正确
-        this.tooltipType = "network";
+        console.log('version defaultVersion:: ', version, defaultVersion);
         return version != defaultVersion;
       }
       return false;
@@ -111,11 +108,13 @@ export default {
     }
   },
   created(){
-    this.initWeb3();
+    this.initWeb3()
   },
   methods: {
     initData(){
       this.$Bus.$emit(this.$EventNames.initMember, this);
+      // 刷新余额
+      this.$Bus.$emit(this.$EventNames.refreshBalance, this);
     },
     reloadPage(){
       window.location.reload();
@@ -123,13 +122,14 @@ export default {
     downloadMetamask(){
       window.open("https://metamask.io/");
     },
-    async initWeb3(){
+    async initWeb3() {
       // 入口初始化系统配置及web3，TruffleContract工具类
       const response = await getSettings();
       const settings = response.data;
-      console.info("settings:", settings);
+      // console.info("settings:", settings);
       this.$store.dispatch("settings/changeSetting", { key: "settings", value: settings });
-      this.$store.dispatch('app/setWeb3', { web3: this.$CustomWeb3, settings: settings});
+      const injected = localStorage.getItem('connectorId')
+      this.$store.dispatch('app/setWeb3', { web3: this.$CustomWeb3, settings: settings, type: injected});
       getBNBQuote(this);
     },
 
@@ -174,6 +174,7 @@ export default {
     top: 0;
     right: 0;
     z-index: 9;
+    padding-right: 0;
     width: calc(100% - #{$sideBarWidth});
     transition: width 0.28s;
   }
