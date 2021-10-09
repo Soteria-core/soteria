@@ -12,14 +12,14 @@
     </el-card>
     <br />
     <el-row :gutter="20">
-      <el-col :span="18">
+      <el-col :xs="24" :lg="18" class="mb20">
         <transition name="el-fade-in-linear" mode="out-in">
           <criteria :options="options" v-if="options.active==0"/>
           <!-- <proof :options="options" v-if="options.active==1"/> -->
           <submit :options="options" v-if="options.active==1"/>
         </transition>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="24" :lg="6">
         <claimSummary class="right-top" :options="options" @next="next" @back="back" @accept="accept" @deny="deny"/>
       </el-col>
     </el-row>
