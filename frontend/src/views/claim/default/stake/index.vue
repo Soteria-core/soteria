@@ -19,7 +19,6 @@ import becomeAssessor from './becomeAssessor';
 import increase from './increase';
 import extend from './extend';
 import TokenControllerContract from '@/services/TokenController';
-import { BigNumber } from 'bignumber.js'
 
 export default {
   components:{
