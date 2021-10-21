@@ -1,5 +1,7 @@
 <template>
-  <div id="cover-claim" v-loading.fullscreen.lock="loading"
+  <div
+    id="cover-claim"
+    v-loading.fullscreen.lock="loading"
     element-loading-text="Claim submitting...">
     <el-card class="box-card">
       <div slot="header" class="title">Open claim</div>
@@ -12,7 +14,7 @@
     </el-card>
     <br />
     <el-row :gutter="20">
-      <el-col :span="18">
+      <el-col :xs="24" :sm="24" :md="18">
         <transition name="el-fade-in-linear" mode="out-in">
           <!-- <coverDetails :options="options" v-if="options.active==0"/> -->
           <!-- <addresses :options="options"  v-if="options.active==1"/>
@@ -20,7 +22,7 @@
           <claim :options="options" v-if="options.active==0"/>
         </transition>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="24" :sm="24" :md="6">
         <cover class="right-top" :options="options" @next="next" @back="back"/>
       </el-col>
     </el-row>
@@ -65,7 +67,7 @@ export default {
     web3Status: watch.web3Status
   },
   created(){
-    
+
     this.initData();
     this.$Bus.bindEvent(this.$EventNames.switchAccount, this._uid, (account)=>{
       this.initData();
@@ -101,14 +103,14 @@ export default {
     },
     back(){
       if(this.options.active == 0){
-        this.$router.push({ name: this.$RouteNames.COVER_DEFAULT });  
+        this.$router.push({ name: this.$RouteNames.COVER_DEFAULT });
       }else{
         this.options.active --;
       }
     },
     next(contract){
       if(this.options.active<0){
-        this.options.active++;  
+        this.options.active++;
       }else{
         // 提交索赔
         this.loading = true;
@@ -116,7 +118,7 @@ export default {
         contract.instance.submitClaim(this.options.cover.cid.toString(), { from: this.member.account }).then(res => {
           console.info(res, res.toString());
           this.loading = false;
-          this.$router.push({ name: this.$RouteNames.COVER_DEFAULT });  
+          this.$router.push({ name: this.$RouteNames.COVER_DEFAULT });
         }).catch(e => {
           console.error(e);
           this.$message.error(e.message);
