@@ -1,32 +1,33 @@
 <template>
   <div class="app-container" id="gov">
+    <StartMembership/>
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
       <el-tab-pane label="Proposal" name="proposal">
-        <el-row :gutter="20" v-if="activeName == 'proposal'">
-          <el-col :span="12">
+        <el-row :gutter="20">
+          <el-col :xs="24" :sm="24" :md="12" class="mb20">
             <ProposalList :options="options" />
           </el-col>
-          <el-col :span="12">
+          <el-col :xs="24" :sm="24" :md="12">
             <ProposalDetail :options="options" />
           </el-col>
         </el-row>
       </el-tab-pane>
       <el-tab-pane label="Category" name="category">
-        <el-row :gutter="20" v-if="activeName == 'category'">
-          <el-col :span="8">
+        <el-row :gutter="20">
+          <el-col :xs="24" :sm="24" :md="8" class="mb20">
             <CategoryList :options="options" />
           </el-col>
-          <el-col :span="16">
+          <el-col :xs="24" :sm="24" :md="16">
             <CategoryDetail :options="options" />
           </el-col>
         </el-row>
       </el-tab-pane>
       <el-tab-pane label="Roles" name="roles">
-        <el-row :gutter="20" v-if="activeName == 'roles'">
-          <el-col :span="8">
+        <el-row :gutter="20">
+          <el-col :xs="24" :sm="24" :md="8" class="mb20">
             <RoleList :options="options" />
           </el-col>
-          <el-col :span="16">
+          <el-col :xs="24" :sm="24" :md="16">
             <RoleDetail :options="options" />
           </el-col>
         </el-row>
@@ -56,7 +57,9 @@ export default {
       activeName: "proposal",
       MemberRoles: null,
       options: {
-        active: "2",
+        activeProposal: "2",
+        activeCategory: "2",
+        activeRole: {},
         formatters: {},
         curRoles: [],
         paramValues: [],
@@ -90,6 +93,9 @@ export default {
       this.loadMemberRoles();
     },
     loadMemberRoles(){
+      if (!this.member.account) {
+        return
+      }
       const instance = this.MemberRoles.getContract().instance;
       this.options.curRoles = [];
       instance.roles(this.member.account).then(res => {
@@ -102,18 +108,18 @@ export default {
       });
     },
     handleClick(){
-      if(this.activeName == "roles"){
-        this.options.active = {};
-      }else{
-        this.options.active = "2";
-      }
+      // if(this.activeName == "roles"){
+      //   this.options.activeRole = {};
+      // }else{
+      //   this.options.activeProposal = "2";
+      //   this.options.activeCategory = "2";
+      // }
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/element-variables.scss';
 #gov{
   .el-form-item{
     margin-bottom: 5px !important;
