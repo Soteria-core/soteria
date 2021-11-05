@@ -1,7 +1,9 @@
 <template>
-  <div id="stake-default" v-loading.fullscreen.lock="false"
-        element-loading-text="Data is loading ...">
-    <div v-if="options.stakedProjects.length == 0">
+  <div
+    id="stake-default"
+    v-loading.fullscreen.lock="loading"
+    element-loading-text="Data is loading ...">
+    <div v-if="!member.isMember || options.stakedProjects.length == 0">
       <overall :options="options"/>
       <br/>
       <introduce />
@@ -62,6 +64,7 @@ export default {
   },
   methods: {
     async initData(){
+      const web3Status = this.web3Status
       if(this.projects.length == 0){
         try{
           const response = await getStakeProjects(this);
@@ -70,7 +73,7 @@ export default {
           console.error("Get projects failed.", e);
         }
       }
-      if(this.web3Status === this.WEB3_STATUS.AVAILABLE){
+      if(web3Status === this.WEB3_STATUS.AVAILABLE){
         this.initContract();
       }
     },
@@ -89,6 +92,7 @@ export default {
       }
     },
     getAllStaked(){
+      this.options.allStaked = 0
       const instance = this.PooledStaking.getContract().instance;
       this.projects.forEach((item, index) => {
         instance.contractStake(item.address).then(res => {
@@ -97,12 +101,18 @@ export default {
       });
     },
     getDeposit(){
+      if (!this.member.account) {
+        return
+      }
       const contract = this.PooledStaking.getContract();
       contract.instance.stakerDeposit(this.member.account).then(res => {
         this.options.deposit = this.$etherToValue(res.toString());
       });
     },
     getRewards(){
+      if (!this.member.account) {
+        return
+      }
       const contract = this.PooledStaking.getContract();
       contract.instance.stakerReward(this.member.account).then(res => {
         this.options.rewards = this.$etherToValue(res.toString());
@@ -110,9 +120,13 @@ export default {
       getRewards(this);
     },
     getStakedProjects(){
+      if (!this.member.account) {
+        return
+      }
       const contract = this.PooledStaking.getContract();
       this.options.stakedProjects = [];
-      contract.instance.stakerContractsArray(this.member.account).then(async res => {
+      const account = this.member.account;
+      contract.instance.stakerContractsArray(account).then(async res => {
         const stakedProjects = res;
         const map = {};
         this.projects.filter(item=>stakedProjects.indexOf(item.address)>=0).forEach(item=>{
@@ -124,10 +138,18 @@ export default {
         });
         // 按顺序加载已stake合约，否则不能顺利进行下次stake
         for(let i=0;i<stakedProjects.length;i++){
+          if (account !== this.member.account) { // 这个时候用户切换账号，停止循环
+            break;
+          }
           const item = map[stakedProjects[i]];
           if(item){
             await this.setStakedAndUnstakedForAddress(item);
-            this.options.stakedProjects.push(item);
+            const isExist = this.options.stakedProjects.find(p => {
+              return p.address === item.address
+            })
+            if (account === this.member.account && !isExist) {
+              this.options.stakedProjects.push(item);
+            }
           }
         }
         this.loading = false;
