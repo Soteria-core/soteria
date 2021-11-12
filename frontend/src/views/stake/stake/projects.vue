@@ -5,16 +5,16 @@
         <highlight>Find Project</highlight>
       </div>
       <el-form inline label-width="100px" :model="form">
-        <el-row style="margin-bottom: 20px;">
-          <el-col :span="12">
+        <el-row>
+          <el-col :xs="24" :sm="24" :md="12" class="mb20">
             <el-form-item label="Sort by">
               <el-radio-group v-model="form.sortBy" @change="sort">
-                <el-radio-button label="NEWTEST">NEWTEST</el-radio-button>
-                <el-radio-button label="MOSTSTAEKD">MOST STAEKD</el-radio-button>
+                <el-radio-button label="NEWTEST">NEWEST</el-radio-button>
+                <el-radio-button label="MOSTSTAEKD">MOST STAKED</el-radio-button>
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :xs="24" :sm="24" :md="12" class="mb20">
             <el-form-item label="Show">
               <el-checkbox-group v-model="form.show" @change="filter">
                 <el-checkbox-button label="Smart contracts" key="Smart contracts">Smart contracts</el-checkbox-button>
@@ -26,7 +26,12 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="Search">
-              <el-input placeholder="e.g. Compound" clearable @keyup.native="filter" @change="filter" v-model="form.search"></el-input>
+              <el-input
+                placeholder="e.g. PancakeSwap"
+                clearable
+                @keyup.native="filter"
+                @change="filter"
+                v-model="form.search"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -34,33 +39,51 @@
     </el-card>
     <br/>
     <el-row :gutter="20">
-      <el-col v-for="(project, index) in projects" :span="8" style="margin-bottom: 20px;">
-          <el-card class="li-degrees-badge-parent">
-              <DegreesBadge v-if="project.status && project.status.length>0" :color="colors[project.status]" :fromColor="fromColors[project.status]" :toColor="toColors[project.status]">
-                {{project.status.toUpperCase()}}
-              </DegreesBadge>
-              <div style="line-height: 40px;" class="title">
-                <img :src="project.icon" class="project-large-icon" />
-                <span>{{project.name}}</span>
+      <el-col v-for="(project, index) in projects" :key="project.address" :xs="24" :sm="12" :md="12" :lg="8" class="mb20">
+        <el-card class="li-degrees-badge-parent">
+          <DegreesBadge
+            v-if="showProjectTag(project)"
+            :color="colors[project.status]"
+            :fromColor="fromColors[project.status]"
+            :toColor="toColors[project.status]">
+            {{project.status.toUpperCase()}}
+          </DegreesBadge>
+          <div style="line-height: 40px;" class="title">
+            <img :src="project.icon" class="project-large-icon" />
+            <span>{{project.name}}</span>
+          </div>
+          <div class="desc">
+            <div class="desc-ellipsis">{{project.description}}</div>
+            <el-tooltip placement="top" v-if="project.activityDesc.length" :disabled="project.activityDesc.length===1">
+              <div slot="content">
+                <div v-for="item in project.activityDesc" :key="item" class="lh24">Earn {{ item }} / SOTE weekly!</div>
               </div>
-              <div style="height:25px;">
-                <div>{{project.description}}</div>
-              </div>
-              <el-form label-width="100px">
-                <el-form-item label="Project type">
-                  {{project.type}}
-                </el-form-item>
-                <el-form-item label="Staked">
-                  {{(project.staked && project.staked > 0) ? $etherToNumber(project.staked) : project.staked}} SOTE
-                </el-form-item>
-                <el-form-item label="APY">
-                  {{project.APY?project.APY:"N/A"}}
-                </el-form-item>
-              </el-form>
-              <div style="text-align: center;" v-if="project.status!='discard'">
-                <el-button type="primary" :disabled="isSelected(project)" round size="mini" style="width: 150px;" @click="selectProject(project)">Select</el-button>
-              </div>
-          </el-card>
+              <el-tag class="desc-activity" size="small">Earn {{project.activityDesc[0]}} / SOTE weekly!
+                <i class="el-icon-more" v-if="project.activityDesc.length>1"></i>
+              </el-tag>
+            </el-tooltip>
+          </div>
+          <el-form label-width="100px">
+            <el-form-item label="Project type">
+              {{project.type}}
+            </el-form-item>
+            <el-form-item label="Staked">
+              {{(project.staked && project.staked > 0) ? $etherToNumber(project.staked) : project.staked}} SOTE
+            </el-form-item>
+            <el-form-item label="APY">
+              {{project.APY?project.APY:"N/A"}}
+            </el-form-item>
+          </el-form>
+          <div style="text-align: center;">
+            <el-button
+              type="primary"
+              :disabled="disSelected(project)"
+              round
+              size="mini"
+              style="width: 150px;"
+              @click="selectProject(project)">Select</el-button>
+          </div>
+        </el-card>
       </el-col>
     </el-row>
   </div>
@@ -73,8 +96,7 @@ import { getStakeProjects } from '@/api/stake.js';
 import PooledStakingContract from '@/services/PooledStaking'
 
 export default {
-  components:{
-  },
+  components: {},
   props: ["options"],
   data() {
     return {
@@ -120,23 +142,24 @@ export default {
   },
   methods: {
     async initData(){
-      try{
+      if(this.web3Status === this.WEB3_STATUS.AVAILABLE){
         const response = await getStakeProjects(this);
         this.projects = response.data;
         this.oldProjects = JSON.parse(JSON.stringify(response.data));
-      }catch(e){
-        console.error("Get projects failed.", e);
-      }
-      if(this.web3Status === this.WEB3_STATUS.AVAILABLE){
         this.initContract();
       }
     },
     async initContract(){
-      this.PooledStaking = await this.getContract(PooledStakingContract);
-      this.getAllStaked();
-      if(!this.$route.params.stakedProjects){
-        this.getDeposit();
-        this.getStakedProjects();
+      if(this.$route.params.stakedProjects){
+        this.PooledStaking = await this.getContract(PooledStakingContract);
+        this.getAllStaked();
+      } else {
+        // 在此页面加载数据会有问题
+        // if (this.$route.fullPath !== 'system/stake/default') {
+        this.$router.push({ name: this.$RouteNames.STAKE_DEFAULT, params: { defaultTab: "stake" } });
+        // }
+        // this.getDeposit();
+        // this.getStakedProjects();
       }
     },
     getDeposit(){
@@ -149,7 +172,8 @@ export default {
       const contract = this.PooledStaking.getContract();
       this.projects.forEach((item, index) => {
         contract.instance.contractStake(item.address).then(res => {
-          item.staked = res.toString();
+          this.$set(item, 'staked', res.toString())
+          // item.staked = res.toString();
           this.oldProjects[index].staked = res.toString();
         });
       });
@@ -158,7 +182,7 @@ export default {
       const contract = this.PooledStaking.getContract();
       contract.instance.stakerContractsArray(this.member.account).then(async res => {
         this.stakedProjects = res;
-        console.info(res);
+        // console.log('stakedProjects:: ', res);
         const count = this.options.selectedProject.filter(item=>this.stakedProjects.indexOf(item.address)>=0).length;
         if(count > 0){
           return;
@@ -176,7 +200,10 @@ export default {
           const item = map[this.stakedProjects[i]];
           if(item){
             await this.setStatedForAddress(item);
-            this.options.selectedProject.push(item);
+            const isExit = this.options.selectedProject.find((project) => {
+              return project.address === item.address
+            })
+            !isExit && this.options.selectedProject.push(item);
           }
         }
       }).catch((e)=>{
@@ -188,13 +215,14 @@ export default {
       const ownerStaked = await contract.instance.stakerContractStake(this.member.account, item.address);
       item.stakedStatus = "staked";// 代表已经stake过了
       item.ownerStaked = this.$etherToValue(ownerStaked.toString());
-      
+
       const unstaked = await contract.instance.stakerContractPendingUnstakeTotal(this.member.account, item.address);
       item.unstaked = this.$etherToValue(unstaked.toString());
       item.unstaking = 0;
     },
-    isSelected(project){
-      return this.options.selectedProject.filter(item=>item.name == project.name).length > 0;
+    disSelected(project){
+      const isSelected = this.options.selectedProject.filter(item=>item.name == project.name).length > 0;
+      return project.status=='discard' || isSelected;
     },
     sort(){
       let sort = "new";
@@ -216,6 +244,19 @@ export default {
       this.projects = projects.filter(item=>this.form.show.indexOf(item.type)>=0);
       this.sort();
     },
+    showProjectTag(project){
+      if (!project.status) {
+        return false
+      }
+      if (project.status !== 'new') {
+        return true
+      }
+      // 新项目
+      if (!project.createTime) {
+        return true
+      }
+      return project.createTime > Date.now() - 7*24*60*60*1000 // 一周之内的项目
+    },
     selectProject(project){
       if(!project.stake){
         project.stake = "0";
@@ -230,13 +271,14 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import '@/styles/element-variables.scss';
 .el-form-item {
   margin-bottom: 0px;
-  .el-input{
-    width:246px;
+
+  .el-input {
+    width: 246px;
   }
 }
+
 .icon-name {
   width: 40px;
   height: 40px;
@@ -244,8 +286,31 @@ export default {
   margin-right: 20px;
   margin-bottom: 20px;
 }
-.title{
-  vertical-align: middle;
 
+.title {
+  vertical-align: middle;
+}
+
+.desc {
+  height: 86px;
+
+  &-ellipsis {
+    margin-top: 8px;
+    line-height: 18px;
+    height: 54px;
+    word-break: break-word;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+  }
+  &-activity {
+    margin-top: 8px;
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 }
 </style>
