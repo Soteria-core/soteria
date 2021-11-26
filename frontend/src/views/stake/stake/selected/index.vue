@@ -3,19 +3,22 @@
     <el-card :style="{top: top+'px'}">
       <div slot="header" class="clearfix">
         <highlight>{{titles[options.active > 3 ? 3 : options.active]}}</highlight>
+        <span class="toggle-btn secondary-text" :class="{'expand': expand}" @click="expand=!expand" v-if="showExpandBtn">
+          <i class="el-icon-arrow-down"></i>{{ expand ? 'Put away' : 'Open up' }}
+        </span>
       </div>
-      <div style="margin-bottom: 20px;">
-          <selected v-if="options.active==0" :options="options" />
+      <div class="mb20">
+        <selected v-if="options.active==0" :options="options" :expand="device!=='mobile' || expand"/>
 
-          <projectSummary v-if="options.active==1" :options="options" />
+        <projectSummary v-if="options.active==1" :options="options" />
 
-          <agreement v-if="options.active==2" :options="options" />
+        <agreement v-if="options.active==2" :options="options" />
 
-          <confirmation v-if="options.active>2" :options="options" />
+        <confirmation v-if="options.active>2" :options="options" />
       </div>
       <div style="text-align: center;">
-        <el-button type="primary" plain round size="small" @click="back" >Back</el-button>
-        <el-button type="primary" :disabled="!isContinue" round size="small" @click="next" >{{options.active>2 ? "Confirm Stake" : "Continue"}}</el-button>
+        <el-button type="primary" plain round size="small" @click="back" ref="back">Back</el-button>
+        <el-button type="primary" :disabled="!isContinue" round size="small" @click="next" ref="next">{{options.active>2 ? "Confirm Stake" : "Continue"}}</el-button>
       </div>
     </el-card>
   </div>
@@ -40,6 +43,7 @@ export default {
       titles: ["Selected", "Summary", "Agreement", "Confirmation"],
       top: 0,
       isContinue: false,
+      expand: false
     }
   },
   computed: {
@@ -47,7 +51,8 @@ export default {
       'web3',
       'member',
       'web3Status',
-      'settings'
+      'settings',
+      'device'
     ]),
     // 已经stake的总和
     usedAmount(){
@@ -63,6 +68,11 @@ export default {
       return this.options.selectedProject.filter(item=>BigNumber(item.stake.toString()).plus(item.ownerStaked)
             .comparedTo(this.settings.stake.minAmountPerContract)<0).length > 0;
     },
+    //判断有没有大于deposite的合约
+    moreThanDeposited() {
+      return this.options.selectedProject.filter(item=>BigNumber(item.stake.toString()).plus(item.ownerStaked)
+            .comparedTo(this.perAmountShow)>0).length > 0;
+    },
     // 列表中所有合约的最大stake值
     maxPerAmount(){
       // 取最大值
@@ -72,6 +82,14 @@ export default {
       return BigNumber(this.options.selectedProject.map(item=>BigNumber(item.stake.toString()).plus(item.ownerStaked))
                              .reduce((max, item)=> item ? (max>item? max : item) : (max?max:0))).toString();
     },
+    showExpandBtn() {
+      return this.device==='mobile' && this.options.active==0 && this.options.selectedProject.length > 1
+    },
+    // 每个合约目前允许的最大金额
+    perAmountShow(){
+      const depositAmount = this.options.perAmount || 0
+      return BigNumber(depositAmount).plus(this.options.totalAmount).toFixed(2, 1);
+    }
   },
   watch: {
     web3Status: watch.web3Status,
@@ -99,11 +117,16 @@ export default {
     async initContract(){
 
     },
+    expandProject() {
+      this.expand = true
+    },
     next(){
       this.$emit("next");
+      this.$refs.next.$el.blur();
     },
     back(){
       this.$emit("back");
+      this.$refs.back.$el.blur();
     },
     checkContinue(){
       if(this.options.active == 0){
@@ -113,13 +136,17 @@ export default {
         return true;
       }
       if(this.options.active == 1){
+        if (!this.member.isMember) {
+          return false;
+        }
         // 首次充值小于20
-        if(this.options.totalAmount == 0 && BigNumber(this.options.perAmount).comparedTo(this.settings.stake.minAmountPerContract) < 0){
+        const depositAmount = this.options.perAmount || 0
+        if(this.options.totalAmount == 0 && BigNumber(depositAmount).comparedTo(this.settings.stake.minAmountPerContract) < 0){
           console.error("首次充值金额不能小于20");
           return false;
         }
         // 单合约的投入大于每笔合约限额（本次充值金额加之前的充值金额，即累计充值金额）
-        if(BigNumber(this.options.perAmount).plus(this.options.totalAmount).comparedTo(this.maxPerAmount) < 0){
+        if(BigNumber(depositAmount).plus(this.options.totalAmount).comparedTo(this.maxPerAmount) < 0){
           console.error("单合约的投入大于每笔合约限额（本次充值金额加之前的充值金额，即累计充值金额）");
           return false;
         }
@@ -129,13 +156,17 @@ export default {
           return false;
         }
         // 余额不足
-        if(BigNumber(this.$ether(this.options.perAmount.toString())).comparedTo(BigNumber(this.member.balance.toString())) > 0){
+        if(BigNumber(this.$ether(depositAmount)).comparedTo(BigNumber(this.member.balance.toString())) > 0){
           console.error("余额不足");
           return false;
         }
         // 单合约投入不足最低标准
         if(this.isMin){
           console.error("所有新合约stake有不足最低标准的");
+          return false;
+        }
+        if(this.moreThanDeposited) {
+          console.error("单个合约stake金额不得超过deposit金额");
           return false;
         }
         return true;
@@ -162,11 +193,12 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import '@/styles/element-variables.scss';
 #stake-stake-selected{
   .el-card{
       position: relative;
+      z-index: 1;
   }
+
   .icon-name {
     vertical-align: middle;
     margin-right: 15px;
