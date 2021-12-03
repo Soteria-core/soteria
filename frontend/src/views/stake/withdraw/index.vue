@@ -1,16 +1,18 @@
 <template>
-  <div id="stake-withdraw" v-loading.fullscreen.lock="loading"
-        element-loading-text="Transaction is confirming ...">
+  <div
+    id="stake-withdraw"
+    v-loading.fullscreen.lock="loading"
+    element-loading-text="Transaction is confirming ...">
     <el-card class="box-card">
       <div slot="header"><highlight>Withdraw stake</highlight></div>
-      You can withdraw any unused SOTE from your deposit.
+      <div class="normal-text">You can withdraw any unused SOTE from your deposit.</div>
     </el-card>
     <el-row :gutter="20" v-if="options">
-      <el-col :span="18">
+      <el-col :xs="24" :sm="24" :md="24" :lg="18" class="mb20">
         <withdraw :options="options" ref="withdraw"/>
         <projects :options="options"/>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="24" :sm="24" :md="24" :lg="6">
         <withdrawSummary class="right-top" :options="options" @confirm="confirm" @back="back"/>
       </el-col>
     </el-row>
@@ -24,7 +26,6 @@ import projects from '@/views/stake/common/projects';
 import withdraw from './withdraw';
 import withdrawSummary from './summary';
 import PooledStakingContract from '@/services/PooledStaking'
-import { BigNumber } from 'bignumber.js'
 
 export default {
   components:{
@@ -62,6 +63,7 @@ export default {
         let options = JSON.parse(JSON.stringify(params));
         options.withdraw = '';
         this.options = options;
+        this.options.stakedProjects = params.stakedProjects
       } else {
         this.$router.push("/system/stake/default");
       }
