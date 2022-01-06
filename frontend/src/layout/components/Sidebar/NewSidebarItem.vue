@@ -1,16 +1,37 @@
 <template>
-    <fragment v-if="item.meta && !item.hidden">
-      <el-menu-item-group>
-        <span slot="title">{{item.meta.title}}</span>
-        <Permission v-for="subRoute in item.children" :permissions="[subRoute.name]" type="remove">
-          <app-link v-if="subRoute.meta" :to="resolvePath(subRoute.path)">
-            <el-menu-item :index="item.path + '/' + subRoute.path">
-              <item :icon="item.meta.icon||(subRoute.meta&&subRoute.meta.icon)" :title="subRoute.meta.title" />
-            </el-menu-item>
-          </app-link>
-        </Permission>
-      </el-menu-item-group>
-    </fragment>
+  <fragment v-if="item.meta && !item.hidden">
+    <el-menu-item-group>
+      <span slot="title">{{item.meta.title}}</span>
+      <Permission v-for="subRoute in item.children" :permissions="[subRoute.name]" type="remove">
+        <div v-if="subRoute.path!='stats'">
+        <app-link v-if="subRoute.meta" :to="resolvePath(subRoute.path)">
+          <el-menu-item :index="item.path + '/' + subRoute.path">
+            <item :icon="item.meta.icon||(subRoute.meta&&subRoute.meta.icon)" :title="subRoute.meta.title" />
+          </el-menu-item>
+        </app-link>
+        </div>
+        <div v-else>
+          <el-submenu index="1">
+            <template slot="title">
+              <app-link :to="resolvePath(subRoute.path)">
+                <el-menu-item :index="item.path + '/' + subRoute.path" style="padding-left:0">
+                  <item :icon="item.meta.icon||(subRoute.meta&&subRoute.meta.icon)" :title="subRoute.meta.title" />
+                </el-menu-item>
+              </app-link>
+            </template>
+            <el-menu-item-group>
+              <app-link to="/system/stats/default">
+                <el-menu-item index="1-1">Plateform Stats</el-menu-item>
+              </app-link>
+              <app-link to="/system/stats/project">
+                <el-menu-item index="1-2">Project Stats</el-menu-item>
+              </app-link>
+            </el-menu-item-group>
+          </el-submenu>
+        </div>
+      </Permission>
+    </el-menu-item-group>
+  </fragment>
 </template>
 
 <script>
@@ -40,7 +61,7 @@ export default {
     return {}
   },
   methods: {
-    resolvePath(routePath) {
+    resolvePath(routePath, stats) {
       if (isExternal(routePath)) {
         return routePath
       }

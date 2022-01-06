@@ -3,17 +3,18 @@
     <el-card class="box-card">
       <el-row>
         <h2 class="main-text">Claims</h2>
-        <span class="normal-text">Earn rewards by becoming a Soteria Claims Assessor.</span>
-        <span class="right-area">
-          <el-button type="primary" plain round @click="howItWorks">How it works</el-button>
-        </span>
+        <el-row type="flex" style="flex-wrap: wrap;" justify="space-between" align="middle">
+          <el-col :xs="24" :sm="24" :md="16" class="normal-text" :class="{'mb16': device === 'mobile'}" style="line-height: 24px">Earn rewards by becoming a Soteria Claims Assessor.</el-col>
+          <div class="right-area">
+            <el-button type="primary" plain round @click="howItWorks">How it works</el-button>
+          </div>
+        </el-row>
       </el-row>
     </el-card>
   </div>
 </template>
 
 <script>
-import { contracts } from '@/settings.js'
 import { watch } from '@/utils/watch.js';
 import { mapGetters } from 'vuex';
 
@@ -27,6 +28,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'device',
       'web3',
       'member',
       'web3Status',
@@ -58,11 +60,4 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-#claim-default-overall{
-  .overall {
-    .el-row {
-      margin-bottom: 20px !important;
-    }
-  }
-}
 </style>

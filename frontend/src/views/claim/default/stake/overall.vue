@@ -1,16 +1,22 @@
 <template>
   <div class="overall">
-    <el-row class="secondary-text" :gutter="20">
-      <el-col :span="6">STAKE</el-col>
-      <el-col :span="6">STAKE PERIOD ENDS</el-col>
-      <el-col :span="6">AVAILABLE REWARDS</el-col>
-      <el-col :span="6">ASSESSMENTS</el-col>
-    </el-row>
-    <el-row class="highlight" :gutter="20">
-      <el-col :span="6">{{$etherToNumber(options.staked)}} SOTE</el-col>
-      <el-col :span="6">{{period}}</el-col>
-      <el-col :span="6">{{$etherToNumber(rewards)}} SOTE</el-col>
-      <el-col :span="6">Unknown</el-col>
+    <el-row>
+      <el-col :xs="24" :sm="12" :md="6" class="mb20">
+        <div class="secondary-text mb8">STAKE</div>
+        <div class="highlight">{{$etherToNumber(options.staked)}} SOTE</div>
+      </el-col>
+      <el-col :xs="24" :sm="12" :md="6" class="mb20">
+        <div class="secondary-text mb8">STAKE PERIOD ENDS</div>
+        <div class="highlight">{{period}}</div>
+      </el-col>
+      <el-col :xs="24" :sm="12" :md="6" class="mb20">
+        <div class="secondary-text mb8">AVAILABLE REWARDS</div>
+        <div class="highlight">{{$etherToNumber(rewards)}} SOTE</div>
+      </el-col>
+      <el-col :xs="24" :sm="12" :md="6" class="mb20">
+        <div class="secondary-text mb8">ASSESSMENTS</div>
+        <div class="highlight">Unknown</div>
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -74,10 +80,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/element-variables.scss';
-.overall {
-  .el-row {
-    margin-bottom: 20px !important;
-  }
-}
 </style>

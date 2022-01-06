@@ -1,25 +1,31 @@
 <template>
   <div id="cover-overall">
     <el-card class="box-card">
-      <el-form :disabled="!member.isMember">
+      <el-form>
         <el-row>
-        <h2 class="main-text">Soteria Cover</h2>
-        <span class="normal-text">Buy and manage your covers.</span>
-        <span class="right-area">
-          <el-button type="primary" plain round @click="howItWorks">How it works</el-button>
-          <el-button type="primary" round @click="buyCover">Buy Cover</el-button>
-        </span>
-        <el-divider></el-divider>
+          <h2 class="main-text">Soteria Cover</h2>
+          <el-row type="flex" style="flex-wrap: wrap;" justify="space-between" align="middle">
+            <el-col class="normal-text" :xs="24" :sm="24" :md="8" :class="{'mb16': device === 'mobile'}" style="line-height: 24px">
+              Buy and manage your covers.
+            </el-col>
+            <div class="right-area">
+              <el-button type="primary" plain round @click="howItWorks">How it works</el-button>
+              <el-button type="primary" round @click="buyCover">Buy Cover</el-button>
+            </div>
+          </el-row>
+          <el-divider></el-divider>
         </el-row>
         <div class="overall">
-        <el-row class="secondary-text" :gutter="20">
-          <el-col :span="8">ACTIVE BNB COVER AMOUNT</el-col>
-          <el-col :span="8">TOTAL COVERS SOLD</el-col>
-        </el-row>
-        <el-row class="highlight" :gutter="20">
-          <el-col :span="8">{{ bnbCoverAmount }} BNB</el-col>
-          <el-col :span="8">{{ totalCoversSold }}</el-col>
-        </el-row>
+          <el-row>
+            <el-col :xs="24" :sm="8" class="mb20">
+              <div class="secondary-text mb8">ACTIVE BNB COVER AMOUNT</div>
+              <div class="highlight">{{ bnbCoverAmount }} BNB</div>
+            </el-col>
+            <el-col :xs="24" :sm="8" class="mb20">
+              <div class="secondary-text mb8">TOTAL COVERS SOLD</div>
+              <div class="highlight">{{ totalCoversSold }}</div>
+            </el-col>
+          </el-row>
         </div>
       </el-form>
     </el-card>
@@ -27,23 +33,23 @@
 </template>
 
 <script>
-import { contracts } from '@/settings.js'
-import { watch } from '@/utils/watch.js';
-import { mapGetters } from 'vuex';
+import {contracts} from '@/settings.js'
+import {watch} from '@/utils/watch.js';
+import {mapGetters} from 'vuex';
 import QuotationDataContract from "@/services/QuotationData";
 
 export default {
   name: "Overall",
-  components:{
-  },
+  components: {},
   data() {
     return {
-      bnbCoverAmount : "-",
-      totalCoversSold : "-",
+      bnbCoverAmount: "-",
+      totalCoversSold: "-",
     }
   },
   computed: {
     ...mapGetters([
+      'device',
       'web3',
       'member',
       'web3Status',
@@ -52,24 +58,24 @@ export default {
   watch: {
     web3Status: watch.web3Status,
   },
-  created(){
+  created() {
     this.initData();
-    this.$Bus.bindEvent(this.$EventNames.switchAccount, this._uid, (account)=>{
+    this.$Bus.bindEvent(this.$EventNames.switchAccount, this._uid, (account) => {
       this.initData();
     });
   },
   methods: {
-    initData(){
-      if(this.web3Status === this.WEB3_STATUS.AVAILABLE){
+    initData() {
+      if (this.web3Status === this.WEB3_STATUS.AVAILABLE) {
         this.initContract();
       }
     },
-    async initContract(){
+    async initContract() {
       this.QuotationData = await this.getContract(QuotationDataContract);
       this.getTotalSumAssured("BNB");
       this.getCoverLength();
     },
-    buyCover(){
+    buyCover() {
       this.$router.push("/system/cover/buy");
     },
     getTotalSumAssured(token) {
@@ -94,7 +100,7 @@ export default {
         this.$message.error(e.message);
       });
     },
-    howItWorks(){
+    howItWorks() {
       // 查看pdf
       window.open('pdf/SmartContractCoverWording.pdf');
     }
@@ -102,12 +108,4 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import '@/styles/element-variables.scss';
-#cover-overall{
-  .overall {
-    .el-row {
-      margin-bottom: 20px !important;
-    }
-  }
-}
 </style>
